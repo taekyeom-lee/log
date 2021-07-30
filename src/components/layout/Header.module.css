@@ -4,13 +4,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #dddddd;
+  background-color: #157bff;
   padding: 0 10%; 
+  color: white;
 }
 
 .logo {
-  font-size: 1.5rem;   
-  color: black;
+  font-size: 1.5rem;
 }
 
 .header ul {
@@ -28,11 +28,18 @@
 
 .header a {
   text-decoration: none;    
-  color: black;
+  color: white;
 }
 
 .header a:hover,
 .header a:active,
 .header a.active {
-  color: white;
+  font-weight: bold;
+}
+
+.header p:hover,
+.header p:active,
+.header p.active {
+  cursor: pointer;
+  font-weight: bold;
 }

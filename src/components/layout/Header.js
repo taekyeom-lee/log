@@ -5,7 +5,11 @@ import classes from './Header.module.css';
 function Header({ propsFunction }) {
   return (
     <header className={classes.header}>
-      <div className={classes.logo}>Christopher Log</div>
+      <div className={classes.logo}>
+        <Link to='/'>
+          Christopher Log
+        </Link>
+      </div>
       <nav>
         <ul>
           <li>
@@ -14,8 +18,8 @@ function Header({ propsFunction }) {
           <li>
             <Link to='/write'>New Log</Link>
           </li>
-          <li onClick={propsFunction}>
-            Sign In
+          <li>
+            <p onClick={propsFunction}>Sign In</p>
           </li>
         </ul>
       </nav>
