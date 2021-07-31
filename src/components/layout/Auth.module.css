@@ -7,10 +7,6 @@
   padding-bottom: 15px;
 }
 
-.auth label {
-  font-size: 1.1rem;
-}
-
 .auth h1 {
   text-align: center;
 }
@@ -34,14 +30,21 @@
   background-color: #157bff;
 }
 
-.auth span {  
-  display: block;
-  text-align: right;
-  color: #157bff;
+.foot {
+  display: flex;
   float: right;
+  padding-bottom: 1rem;
 }
 
-.auth span:hover {
+.auth span { 
+  margin-right: 4px;
+}
+
+.link {
+  color: #157bff;
+}
+
+.link:hover {
   cursor: pointer;
-  border-bottom: 1px solid #157bff;
+  text-decoration: underline;
 }

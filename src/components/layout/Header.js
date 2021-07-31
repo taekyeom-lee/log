@@ -13,13 +13,13 @@ function Header({ propsFunction }) {
       <nav>
         <ul>
           <li>
-            <Link to='/favorites'>My Favorites</Link>
+            <Link to='/favorites'>북마크</Link>
           </li>
           <li>
-            <Link to='/write'>New Log</Link>
+            <Link to='/write'>새글 작성</Link>
           </li>
           <li>
-            <p onClick={propsFunction}>Sign In</p>
+            <p onClick={propsFunction}>로그인</p>
           </li>
         </ul>
       </nav>
