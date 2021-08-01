@@ -1,0 +1,27 @@
+.favorites {
+  display: flex;
+}
+
+.favorites input {
+  border-radius: 2px;
+  width: 85%;
+  height: 2rem;
+  border: 1px solid #c5c5c5;
+  margin-right: 5px;
+  text-indent: 5px;
+}
+
+.favorites button {
+  font-size: 1.1rem;  
+  color: white;  
+  border-radius: 2px;
+  width: 15%;
+  height: 2rem;
+  border: none;
+  background-color: #157bff;
+}
+
+.favorites button:hover {
+  cursor: pointer;
+  background-color: #0060dd;
+}
