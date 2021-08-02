@@ -25,3 +25,39 @@
   cursor: pointer;
   background-color: #0060dd;
 }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  margin: 2rem 0;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #157bff;
+}
+
+.input {
+  margin: 0.5rem 0 ;
+  border-radius: 2px;
+  width: 100%;
+  height: 2rem;
+  border: 1px solid #c5c5c5;
+  margin-right: 5px;
+  text-indent: 5px;
+}
+
+.button {
+  margin-top: auto;
+  width: 100%;
+  font-size: 1.1rem;  
+  color: white;
+  border-radius: 2px;
+  height: 2rem;
+  border: none;
+  background-color: #0060dd;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #004db1;
+}

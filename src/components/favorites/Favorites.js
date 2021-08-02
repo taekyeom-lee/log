@@ -8,6 +8,9 @@ function Favorites() {
   const [url, setURL] = useState('');
 
   const linkInputRef = useRef();
+  const urlInputRef = useRef();
+  const titleInputRef = useRef();
+  const subjectInputRef = useRef();
 
   function handler(event) {
     event.preventDefault();
@@ -28,16 +31,49 @@ function Favorites() {
       .catch((err) => console.log('Failed to fetch page: ', err));
   }
 
+  function submitHandler(event) {
+    event.preventDefault();
+
+    console.log(urlInputRef.current.value);
+    console.log(titleInputRef.current.value);
+    console.log(subjectInputRef.current.value);
+  }
+
   return (
     <div>
       <div className={classes.favorites}>
-        <input type='text' required ref={linkInputRef} placeholder='링크' />
+        <input type='text' placeholder='링크' ref={linkInputRef} />
         <button type='submit' onClick={handler}>
-          추가
+          입력
         </button>
       </div>
-      {isValidLink && <div>{title}</div>}
-      {isValidLink && <div>{url}</div>}
+      {isValidLink && (
+        <div className={classes.card}>
+          <input
+            className={classes.input}
+            type='text'
+            defaultValue={url}
+            placeholder='URL'
+            ref={urlInputRef}
+          />
+          <input
+            className={classes.input}
+            type='text'
+            defaultValue={title}
+            placeholder='제목'
+            ref={titleInputRef}
+          />
+          <input
+            className={classes.input}
+            type='text'
+            placeholder='주제'
+            ref={subjectInputRef}
+          />
+          <button className={classes.button} onClick={submitHandler}>
+            추가
+          </button>
+        </div>
+      )}
     </div>
   );
 }
