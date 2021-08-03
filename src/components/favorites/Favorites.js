@@ -1,13 +1,29 @@
 import { useState, useRef } from 'react';
 import { GoChevronUp, GoChevronDown } from 'react-icons/go';
 
+import FavoritesList from './FavoriteList';
 import classes from './Favorites.module.css';
 
 function Favorites() {
   const [formIsOpen, setFormIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [url, setURL] = useState('');
+  const [myFavorites, setMyFavoritesList] = useState([
+    {
+      id: 1,
+      url: 'https://evan-moon.github.io/2020/05/21/about-cors/',
+      title: 'CORS는 왜 이렇게 우리를 힘들게 하는걸까?',
+      subject: 'Cors',
+    },
+    {
+      id: 2,
+      url: 'https://flamingotiger.github.io/frontend/react/create-react-app-deploy/',
+      title: 'React 프로젝트 GitHub Pages로 배포하기',
+      subject: 'React',
+    },
+  ]);
 
+  const nextId = useRef(0);
   const linkInputRef = useRef();
   const urlInputRef = useRef();
   const titleInputRef = useRef();
@@ -37,10 +53,20 @@ function Favorites() {
     console.log(urlInputRef.current.value);
     console.log(titleInputRef.current.value);
     console.log(subjectInputRef.current.value);
+
+    const myFavorite = {
+      id: nextId.current,
+      url: urlInputRef.current.value,
+      title: titleInputRef.current.value,
+      subject: subjectInputRef.current.value,
+    };
+
+    setMyFavoritesList(myFavorites.concat(myFavorite));
   }
 
   function formHandler() {
     setFormIsOpen((prevState) => !prevState);
+    nextId.current += 1;
   }
 
   return (
@@ -83,6 +109,7 @@ function Favorites() {
           </button>
         </div>
       )}
+      <FavoritesList myFavorites={myFavorites} />
     </div>
   );
 }
