@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
+import { GoChevronUp, GoChevronDown } from 'react-icons/go';
 
 import classes from './Favorites.module.css';
 
 function Favorites() {
-  const [isValidLink, setIsValidLink] = useState(false);
+  const [formIsOpen, setFormIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [url, setURL] = useState('');
 
@@ -25,8 +26,7 @@ function Favorites() {
 
         setTitle(doc.getElementsByTagName('title')[0].innerHTML);
         setURL(enteredLink);
-
-        setIsValidLink(true);
+        setFormIsOpen(true);
       })
       .catch((err) => console.log('Failed to fetch page: ', err));
   }
@@ -39,6 +39,10 @@ function Favorites() {
     console.log(subjectInputRef.current.value);
   }
 
+  function formHandler() {
+    setFormIsOpen((prevState) => !prevState);
+  }
+
   return (
     <div>
       <div className={classes.favorites}>
@@ -46,8 +50,13 @@ function Favorites() {
         <button type='submit' onClick={handler}>
           입력
         </button>
+        {formIsOpen ? (
+          <GoChevronUp className={classes.icon} onClick={formHandler} />
+        ) : (
+          <GoChevronDown className={classes.icon} onClick={formHandler} />
+        )}
       </div>
-      {isValidLink && (
+      {formIsOpen && (
         <div className={classes.card}>
           <input
             className={classes.input}

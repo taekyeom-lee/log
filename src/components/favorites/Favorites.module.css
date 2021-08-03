@@ -57,7 +57,18 @@
   background-color: #0060dd;
 }
 
-button:hover {
+.button:hover {
   cursor: pointer;
   background-color: #004db1;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+  color: #157bff;
+  margin: 0 2px;
+}
+
+.icon {
+  cursor: pointer;
 }
