@@ -1,7 +1,9 @@
-function FavoriteList({myFavorites}) {
+import FavoriteItem from "./FavoriteItem";
+
+function FavoriteList({ myFavorites }) {
   return <div>
     {myFavorites.map((myFavorite) => (
-        <div>{myFavorite.url}</div>
+        <FavoriteItem key={myFavorite.id} myFavorite={myFavorite} />
       ))}
   </div>
 }
