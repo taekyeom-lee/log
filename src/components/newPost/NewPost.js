@@ -1,22 +1,32 @@
+import { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ReactHtmlParser from 'react-html-parser';
 
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function NewPost() {
+  const [content, setContent] = useState('');
+
+  let data;
+
+  function handler() {
+    setContent(data);
+  }
+
   return (
     <div>
       <h1>NewPost</h1>
       <div>
         <CKEditor
           editor={ClassicEditor}
-          data='<p>Hello from CKEditor 5!</p>'
+          data=''
           onChange={(event, editor) => {
-            const data = editor.getData();
-            console.log(data);
+            data = editor.getData();
           }}
         />
-        <button>제출</button>
+        <button onClick={handler}>제출</button>
       </div>
+      <div>{ReactHtmlParser(content)}</div>
     </div>
   );
 }
