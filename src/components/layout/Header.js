@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { GoSearch } from 'react-icons/go';
 
 import classes from './Header.module.css';
 
@@ -9,6 +10,10 @@ function Header({ propsFunction }) {
         <Link to='/'>
           Christopher Log
         </Link>
+      </div>
+      <div className={classes.search}>
+        <GoSearch className={classes.searchIcon} />
+        <input className={classes.searchInput} placeholder='북마크 검색' />
       </div>
       <nav>
         <ul>
