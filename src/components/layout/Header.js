@@ -15,7 +15,7 @@ function Header({ propsFunction }) {
         <GoSearch className={classes.searchIcon} />
         <input className={classes.searchInput} placeholder='북마크 검색' />
       </div>
-      <nav>
+      <nav className={classes.nav}>
         <ul>
           <li>
             <Link to='/favorites'>북마크</Link>
