@@ -18,7 +18,7 @@ function Header({ propsFunction }) {
       <nav className={classes.nav}>
         <ul>
           <li>
-            <Link to='/favorites'>북마크</Link>
+            <Link to='/bookmarks'>북마크</Link>
           </li>
           <li>
             <Link to='/write'>새글 작성</Link>
