@@ -1,0 +1,44 @@
+/* google bookmark */
+/* bookmarks */
+.bookmarks {
+  background-color: white;
+  border-radius: 4px;
+  padding: 8px 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* item */
+.item {
+  display: flex; 
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  padding-left: 20px;
+}
+
+.item img {
+  width: 20px;
+  height: 20px;
+}
+
+.item div {
+  margin-left: 20px;
+}
+
+.item:hover {
+  cursor: pointer;
+}
+
+.url {
+  color: white;
+}
+
+.image {
+  width: 64px;
+  margin-left: auto;
+}
+
+/* clicked */
+.clicked {
+  background-color: #e3eaf7;
+}

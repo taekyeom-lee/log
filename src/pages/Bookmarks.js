@@ -1,4 +1,4 @@
-import Bookmarks from "../components/bookmarks/Bookmarks";
+import Bookmarks from '../components/bookmarks/Bookmarks';
 
 function BookmarksPage() {
   return (
