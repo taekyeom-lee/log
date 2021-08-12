@@ -45,9 +45,13 @@ function Bookmarks() {
       {myBookmarks.map((myBookmark) => (
         <div className={classes.item} key={myBookmark.id} onClick={handler}>
           <img src={myBookmark.icon} />
-          <div>{myBookmark.title}</div>
-          <div className={classes.url}>{myBookmark.url}</div>
-          <GoKebabVertical className={classes.image} />
+          <div className={classes.text}>
+            <div>{myBookmark.title}</div>
+            <div className={classes.url}>{myBookmark.url}</div>
+          </div>
+          <div className={classes.image}>
+            <GoKebabVertical />
+          </div>
         </div>
       ))}
     </div>
