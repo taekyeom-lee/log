@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { GoKebabVertical } from 'react-icons/go';
 
+import Modal from '../ui/Modal';
+import Backdrop from '../ui/Backdrop';
 import classes from './Bookmarks.module.css';
 import icon from '../../img/logo512.png';
 
 function Bookmarks() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [topPositin, setTopPositin] = useState(0);
   const [myBookmarks, setMyBookmarksList] = useState([
     {
       id: 1,
@@ -20,7 +24,16 @@ function Bookmarks() {
     },
   ]);
 
-  function onClickHandler(e) {
+  function openModalHandler(relativeTop) {
+    setModalIsOpen(true);
+    setTopPositin(relativeTop);
+  }
+
+  function closeModalHadler() {
+    setModalIsOpen(false);
+  }
+
+  function clickHandler(e) {
     if (e.target.className === classes.item) {
       const child = e.target.parentNode.childNodes;
 
@@ -37,6 +50,13 @@ function Bookmarks() {
       }
 
       e.target.parentNode.classList.add(classes.clicked);
+
+      if (e.target.className === classes.image) {
+        const clientRect = e.target.getBoundingClientRect();
+        const relativeTop = clientRect.top;
+
+        openModalHandler(relativeTop);
+      }
     } else if (e.target.parentNode.parentNode.className === classes.item) {
       const child = e.target.parentNode.parentNode.parentNode.childNodes;
 
@@ -45,14 +65,25 @@ function Bookmarks() {
       }
 
       e.target.parentNode.parentNode.classList.add(classes.clicked);
+
+      if (e.target.parentNode.className === classes.image) {
+        const clientRect = e.target.parentNode.getBoundingClientRect();
+        const relativeTop = clientRect.top;
+
+        openModalHandler(relativeTop);
+      }
     }
   }
 
   return (
     <div className={classes.bookmarks}>
       {myBookmarks.map((myBookmark) => (
-        <div className={classes.item} key={myBookmark.id} onClick={onClickHandler}>
-          <img src={myBookmark.icon} alt={icon}/>
+        <div
+          className={classes.item}
+          key={myBookmark.id}
+          onClick={clickHandler}
+        >
+          <img src={myBookmark.icon} alt={icon} />
           <div className={classes.text}>
             <div>{myBookmark.title}</div>
             <div className={classes.url}>{myBookmark.url}</div>
@@ -62,6 +93,10 @@ function Bookmarks() {
           </div>
         </div>
       ))}
+      {modalIsOpen && (
+        <Modal onClose={closeModalHadler} topPosition={topPositin} />
+      )}
+      {modalIsOpen && <Backdrop onClose={closeModalHadler} />}
     </div>
   );
 }
