@@ -2,12 +2,16 @@ import { useState } from 'react';
 import { GoKebabVertical } from 'react-icons/go';
 
 import Modal from '../ui/Modal';
+import EditModal from '../ui/EditModal';
 import Backdrop from '../ui/Backdrop';
 import classes from './Bookmarks.module.css';
 import icon from '../../img/logo512.png';
 
 function Bookmarks() {
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [topPositin, setTopPositin] = useState(0);
   const [myBookmarks, setMyBookmarksList] = useState([
     {
@@ -20,6 +24,12 @@ function Bookmarks() {
       id: 2,
       url: 'https://www.netflix.com/',
       title: 'Netflix',
+      icon: icon,
+    },
+    {
+      id: 3,
+      url: 'https://www.instagram.com/',
+      title: 'Instagram',
       icon: icon,
     },
   ]);
@@ -75,6 +85,15 @@ function Bookmarks() {
     }
   }
 
+  function updateEditModalHadler() {
+    setTitle(myBookmarks[0].title);
+    setUrl(myBookmarks[0].url);
+  }
+
+  function openEditModalHadler() {
+    setEditModalIsOpen(true);
+  }
+
   return (
     <div className={classes.bookmarks}>
       {myBookmarks.map((myBookmark) => (
@@ -88,13 +107,18 @@ function Bookmarks() {
             <div>{myBookmark.title}</div>
             <div className={classes.url}>{myBookmark.url}</div>
           </div>
-          <div className={classes.image}>
+          <div className={classes.image} onClick={updateEditModalHadler}>
             <GoKebabVertical />
           </div>
         </div>
       ))}
+      {editModalIsOpen && <EditModal title={title} url={url} />}
       {modalIsOpen && (
-        <Modal onClose={closeModalHadler} topPosition={topPositin} />
+        <Modal
+          onClose={closeModalHadler}
+          topPosition={topPositin}
+          getEditModalIsOpen={openEditModalHadler}
+        />
       )}
       {modalIsOpen && <Backdrop onClose={closeModalHadler} />}
     </div>

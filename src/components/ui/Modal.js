@@ -3,6 +3,11 @@ import { useEffect } from 'react';
 import classes from './Modal.module.css';
 
 function Modal(props) {
+  function editHandler() {
+    props.getEditModalIsOpen();
+    props.onClose();
+  }
+
   function closeHandler() {
     props.onClose();
   }
@@ -14,7 +19,7 @@ function Modal(props) {
 
   return (
     <div className={classes.modal}>
-      <p className={classes.item} onClick={closeHandler}>
+      <p className={classes.item} onClick={editHandler}>
         편집(E)
       </p>
       <p className={classes.item} onClick={closeHandler}>
