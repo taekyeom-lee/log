@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { GoKebabVertical } from 'react-icons/go';
 
 import Modal from '../ui/Modal';
-import EditModal from '../ui/EditModal';
 import Backdrop from '../ui/Backdrop';
+import EditModal from '../ui/EditModal';
+import EditBackdrop from '../ui/EditBackdrop';
 import classes from './Bookmarks.module.css';
 import icon from '../../img/logo512.png';
 
@@ -85,13 +86,17 @@ function Bookmarks() {
     }
   }
 
+  function openEditModalHadler() {
+    setEditModalIsOpen(true);
+  }
+
+  function closeEditModalHandler() {
+    setEditModalIsOpen(false);
+  }
+
   function updateEditModalHadler() {
     setTitle(myBookmarks[0].title);
     setUrl(myBookmarks[0].url);
-  }
-
-  function openEditModalHadler() {
-    setEditModalIsOpen(true);
   }
 
   return (
@@ -112,7 +117,13 @@ function Bookmarks() {
           </div>
         </div>
       ))}
-      {editModalIsOpen && <EditModal title={title} url={url} />}
+      {editModalIsOpen && (
+        <EditModal
+          title={title}
+          url={url}
+          getEditCancel={closeEditModalHandler}
+        />
+      )}
       {modalIsOpen && (
         <Modal
           onClose={closeModalHadler}
@@ -121,6 +132,7 @@ function Bookmarks() {
         />
       )}
       {modalIsOpen && <Backdrop onClose={closeModalHadler} />}
+      {editModalIsOpen && <EditBackdrop />}
     </div>
   );
 }
