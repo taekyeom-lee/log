@@ -45,7 +45,10 @@ function Bookmarks() {
   }
 
   function clickHandler(e) {
-    if (e.target.className === classes.item) {
+    if (
+      e.target.className === classes.item ||
+      e.target.className === classes.item + ' ' + classes.clicked
+    ) {
       const child = e.target.parentNode.childNodes;
 
       for (let i = 0; i < child.length; i++) {
@@ -53,7 +56,10 @@ function Bookmarks() {
       }
 
       e.target.classList.add(classes.clicked);
-    } else if (e.target.parentNode.className === classes.item) {
+    } else if (
+      e.target.parentNode.className === classes.item ||
+      e.target.parentNode.className === classes.item + ' ' + classes.clicked
+    ) {
       const child = e.target.parentNode.parentNode.childNodes;
 
       for (let i = 0; i < child.length; i++) {
@@ -68,7 +74,11 @@ function Bookmarks() {
 
         openModalHandler(relativeTop);
       }
-    } else if (e.target.parentNode.parentNode.className === classes.item) {
+    } else if (
+      e.target.parentNode.parentNode.className === classes.item ||
+      e.target.parentNode.parentNode.className ===
+        classes.item + ' ' + classes.clicked
+    ) {
       const child = e.target.parentNode.parentNode.parentNode.childNodes;
 
       for (let i = 0; i < child.length; i++) {
