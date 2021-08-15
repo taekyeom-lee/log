@@ -121,6 +121,18 @@ function Bookmarks() {
     setEditModalIsOpen(false);
   }
 
+  function deleteModalHandler() {
+    let newMyBookmarks = [...myBookmarks];
+
+    newMyBookmarks.splice(index, 1);
+
+    for (let i = 0; i < newMyBookmarks.length; i++) {
+      newMyBookmarks[i].id = i + 1;
+    }
+
+    setMyBookmarksList(newMyBookmarks);
+  }
+
   return (
     <div className={classes.bookmarks}>
       {myBookmarks.map((myBookmark) => (
@@ -155,6 +167,7 @@ function Bookmarks() {
           onClose={closeModalHadler}
           topPosition={topPositin}
           getEditModalIsOpen={openEditModalHadler}
+          getModalDelete={deleteModalHandler}
         />
       )}
       {modalIsOpen && <Backdrop onClose={closeModalHadler} />}

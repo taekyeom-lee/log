@@ -9,6 +9,7 @@ function Modal(props) {
   }
 
   function closeHandler() {
+    props.getModalDelete();
     props.onClose();
   }
 
