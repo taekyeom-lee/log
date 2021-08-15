@@ -1,12 +1,25 @@
+import { useState } from 'react';
+
 import classes from './EditModal.module.css';
 
 function EditModal(props) {
-  function nameChangeHandler() {}
+  const [title, setTitle] = useState(props.title);
+  const [url, setUrl] = useState(props.url);
 
-  function urlChangeHandler() {}
+  function titleChangeHandler(e) {
+    setTitle(e.target.value);
+  }
+
+  function urlChangeHandler(e) {
+    setUrl(e.target.value);
+  }
 
   function cancelHandler() {
-    props.getEditCancel();
+    props.getEditModalCancel();
+  }
+
+  function saveHandler() {
+    props.getEditModalSave(title, url);
   }
 
   return (
@@ -17,15 +30,15 @@ function EditModal(props) {
           <div className={classes.text}>이름</div>
           <input
             className={classes.input}
-            value={props.title}
-            onChange={nameChangeHandler}
+            value={title}
+            onChange={titleChangeHandler}
           />
         </div>
         <div className={classes.url}>
           <div className={classes.text}>URL</div>
           <input
             className={classes.input}
-            value={props.url}
+            value={url}
             onChange={urlChangeHandler}
           />
         </div>
@@ -34,7 +47,9 @@ function EditModal(props) {
         <button className={classes.cancelButton} onClick={cancelHandler}>
           취소
         </button>
-        <button className={classes.saveButton}>저장</button>
+        <button className={classes.saveButton} onClick={saveHandler}>
+          저장
+        </button>
       </div>
     </div>
   );

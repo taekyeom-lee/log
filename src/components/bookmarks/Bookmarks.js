@@ -11,6 +11,7 @@ import icon from '../../img/logo512.png';
 function Bookmarks() {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
+  const [index, setIndex] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [topPositin, setTopPositin] = useState(0);
@@ -104,9 +105,20 @@ function Bookmarks() {
     setEditModalIsOpen(false);
   }
 
-  function updateEditModalHadler() {
-    setTitle(myBookmarks[0].title);
-    setUrl(myBookmarks[0].url);
+  const updateEditModalHandler = (id) => (e) => {
+    setTitle(myBookmarks[id - 1].title);
+    setUrl(myBookmarks[id - 1].url);
+    setIndex(id - 1);
+  };
+
+  function saveEditModalHandler(title, url) {
+    let newMyBookmarks = [...myBookmarks];
+
+    newMyBookmarks[index].url = url;
+    newMyBookmarks[index].title = title;
+
+    setMyBookmarksList(newMyBookmarks);
+    setEditModalIsOpen(false);
   }
 
   return (
@@ -122,7 +134,10 @@ function Bookmarks() {
             <div>{myBookmark.title}</div>
             <div className={classes.url}>{myBookmark.url}</div>
           </div>
-          <div className={classes.image} onClick={updateEditModalHadler}>
+          <div
+            className={classes.image}
+            onClick={updateEditModalHandler(myBookmark.id)}
+          >
             <GoKebabVertical />
           </div>
         </div>
@@ -131,7 +146,8 @@ function Bookmarks() {
         <EditModal
           title={title}
           url={url}
-          getEditCancel={closeEditModalHandler}
+          getEditModalCancel={closeEditModalHandler}
+          getEditModalSave={saveEditModalHandler}
         />
       )}
       {modalIsOpen && (
