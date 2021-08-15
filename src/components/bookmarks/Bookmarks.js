@@ -5,6 +5,7 @@ import Modal from '../ui/Modal';
 import Backdrop from '../ui/Backdrop';
 import EditModal from '../ui/EditModal';
 import EditBackdrop from '../ui/EditBackdrop';
+import AddModal from '../ui/AddModal';
 import classes from './Bookmarks.module.css';
 import icon from '../../img/logo512.png';
 
@@ -14,7 +15,10 @@ function Bookmarks() {
   const [index, setIndex] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const [topPositin, setTopPositin] = useState(0);
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [topPosition, setTopPosition] = useState(0);
+  const [xPosition, setXPosition] = useState(0);
+  const [yPosition, setYPosition] = useState(0);
   const [myBookmarks, setMyBookmarksList] = useState([
     {
       id: 1,
@@ -38,7 +42,7 @@ function Bookmarks() {
 
   function openModalHandler(relativeTop) {
     setModalIsOpen(true);
-    setTopPositin(relativeTop);
+    setTopPosition(relativeTop);
   }
 
   function closeModalHadler() {
@@ -133,8 +137,27 @@ function Bookmarks() {
     setMyBookmarksList(newMyBookmarks);
   }
 
+  function rightClickHandler(e) {
+    e.preventDefault();
+
+    setYPosition(e.nativeEvent.pageY);
+    setXPosition(e.nativeEvent.pageX);
+
+    openAddModalHadler();
+  }
+
+  function openAddModalHadler() {
+    setAddModalIsOpen(true);
+  }
+
+  function closeAddModalHandler() {
+    setAddModalIsOpen(false);
+  }
+
+  function addModalHandler() {}
+
   return (
-    <div className={classes.bookmarks}>
+    <div className={classes.bookmarks} onContextMenu={rightClickHandler}>
       {myBookmarks.map((myBookmark) => (
         <div
           className={classes.item}
@@ -154,6 +177,14 @@ function Bookmarks() {
           </div>
         </div>
       ))}
+      {modalIsOpen && (
+        <Modal
+          onClose={closeModalHadler}
+          topPosition={topPosition}
+          getEditModalIsOpen={openEditModalHadler}
+          getModalDelete={deleteModalHandler}
+        />
+      )}
       {editModalIsOpen && (
         <EditModal
           title={title}
@@ -162,16 +193,17 @@ function Bookmarks() {
           getEditModalSave={saveEditModalHandler}
         />
       )}
-      {modalIsOpen && (
-        <Modal
-          onClose={closeModalHadler}
-          topPosition={topPositin}
-          getEditModalIsOpen={openEditModalHadler}
-          getModalDelete={deleteModalHandler}
+      {addModalIsOpen && (
+        <AddModal
+          xPosition={xPosition}
+          yPosition={yPosition}
+          getAddModal={addModalHandler}
+          onClose={closeAddModalHandler}
         />
       )}
       {modalIsOpen && <Backdrop onClose={closeModalHadler} />}
       {editModalIsOpen && <EditBackdrop />}
+      {addModalIsOpen && <Backdrop onClose={closeAddModalHandler} />}
     </div>
   );
 }

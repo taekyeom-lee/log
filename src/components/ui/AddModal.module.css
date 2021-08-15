@@ -1,0 +1,32 @@
+.addModal {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-color: white;
+  padding: 8px 0;
+  width: 9rem;
+  font-size: 0.9rem;
+  z-index: 10;
+  position: fixed;
+  transform: scale(0);
+  /* top: 0; */
+  /* left: 0; */
+  /* transform-origin: top left; */
+  /* top: 0; */
+  /* right: calc(50% - 39rem); */
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 24px;
+  margin: 0;
+}
+
+.item:hover {
+  background-color: silver;
+}
+
+.active {
+  transform: scale(1);
+}
