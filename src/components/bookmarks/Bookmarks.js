@@ -6,6 +6,7 @@ import Backdrop from '../ui/Backdrop';
 import EditModal from '../ui/EditModal';
 import EditBackdrop from '../ui/EditBackdrop';
 import RightClickModal from '../ui/RightClickModal';
+import AddModal from '../ui/AddModal';
 import classes from './Bookmarks.module.css';
 import icon from '../../img/logo512.png';
 
@@ -16,7 +17,7 @@ function Bookmarks() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [rightClickModalIsOpen, setRightClickModalIsOpen] = useState(false);
-  // const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [topPosition, setTopPosition] = useState(0);
   const [xPosition, setXPosition] = useState(0);
   const [yPosition, setYPosition] = useState(0);
@@ -102,6 +103,8 @@ function Bookmarks() {
     }
   }
 
+  // Modal
+  // Modal - Edit function
   function openEditModalHadler() {
     setEditModalIsOpen(true);
   }
@@ -126,6 +129,7 @@ function Bookmarks() {
     setEditModalIsOpen(false);
   }
 
+  // Modal - Delete function
   function deleteModalHandler() {
     let newMyBookmarks = [...myBookmarks];
 
@@ -138,13 +142,16 @@ function Bookmarks() {
     setMyBookmarksList(newMyBookmarks);
   }
 
+  // RightClickModal
   function rightClickHandler(e) {
-    e.preventDefault();
+    if (!addModalIsOpen) {
+      e.preventDefault();
 
-    setYPosition(e.nativeEvent.pageY);
-    setXPosition(e.nativeEvent.pageX);
+      setYPosition(e.nativeEvent.pageY);
+      setXPosition(e.nativeEvent.pageX);
 
-    openRightClickModalHandler();
+      openRightClickModalHandler();
+    }
   }
 
   function openRightClickModalHandler() {
@@ -155,7 +162,25 @@ function Bookmarks() {
     setRightClickModalIsOpen(false);
   }
 
-  function addModalHandler() {}
+  // RightClickModal - Add function
+  function openAddModalHandler() {
+    setAddModalIsOpen(true);
+  }
+
+  function closeAddModalHandler() {
+    setAddModalIsOpen(false);
+  }
+
+  function saveAddModalHandler(title, url) {
+    let newMyBookmarks = [...myBookmarks];
+
+    const length = newMyBookmarks.length;
+
+    newMyBookmarks.push({ id: length + 1, title: title, url: url, icon: icon });
+
+    setMyBookmarksList(newMyBookmarks);
+    setAddModalIsOpen(false);
+  }
 
   return (
     <div className={classes.bookmarks} onContextMenu={rightClickHandler}>
@@ -198,13 +223,24 @@ function Bookmarks() {
         <RightClickModal
           xPosition={xPosition}
           yPosition={yPosition}
-          getAddModal={addModalHandler}
+          getAddModal={openAddModalHandler}
           onClose={closeRightClickModalHandler}
+        />
+      )}
+      {addModalIsOpen && (
+        <AddModal
+          title={title}
+          url={url}
+          getAddModalCancel={closeAddModalHandler}
+          getAddModalSave={saveAddModalHandler}
         />
       )}
       {modalIsOpen && <Backdrop onClose={closeModalHadler} />}
       {editModalIsOpen && <EditBackdrop />}
-      {rightClickModalIsOpen && <Backdrop onClose={closeRightClickModalHandler} />}
+      {rightClickModalIsOpen && (
+        <Backdrop onClose={closeRightClickModalHandler} />
+      )}
+      {addModalIsOpen && <EditBackdrop />}
     </div>
   );
 }
