@@ -5,7 +5,7 @@ import Modal from '../ui/Modal';
 import Backdrop from '../ui/Backdrop';
 import EditModal from '../ui/EditModal';
 import EditBackdrop from '../ui/EditBackdrop';
-import AddModal from '../ui/AddModal';
+import RightClickModal from '../ui/RightClickModal';
 import classes from './Bookmarks.module.css';
 import icon from '../../img/logo512.png';
 
@@ -15,7 +15,8 @@ function Bookmarks() {
   const [index, setIndex] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [rightClickModalIsOpen, setRightClickModalIsOpen] = useState(false);
+  // const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [topPosition, setTopPosition] = useState(0);
   const [xPosition, setXPosition] = useState(0);
   const [yPosition, setYPosition] = useState(0);
@@ -143,15 +144,15 @@ function Bookmarks() {
     setYPosition(e.nativeEvent.pageY);
     setXPosition(e.nativeEvent.pageX);
 
-    openAddModalHadler();
+    openRightClickModalHandler();
   }
 
-  function openAddModalHadler() {
-    setAddModalIsOpen(true);
+  function openRightClickModalHandler() {
+    setRightClickModalIsOpen(true);
   }
 
-  function closeAddModalHandler() {
-    setAddModalIsOpen(false);
+  function closeRightClickModalHandler() {
+    setRightClickModalIsOpen(false);
   }
 
   function addModalHandler() {}
@@ -193,17 +194,17 @@ function Bookmarks() {
           getEditModalSave={saveEditModalHandler}
         />
       )}
-      {addModalIsOpen && (
-        <AddModal
+      {rightClickModalIsOpen && (
+        <RightClickModal
           xPosition={xPosition}
           yPosition={yPosition}
           getAddModal={addModalHandler}
-          onClose={closeAddModalHandler}
+          onClose={closeRightClickModalHandler}
         />
       )}
       {modalIsOpen && <Backdrop onClose={closeModalHadler} />}
       {editModalIsOpen && <EditBackdrop />}
-      {addModalIsOpen && <Backdrop onClose={closeAddModalHandler} />}
+      {rightClickModalIsOpen && <Backdrop onClose={closeRightClickModalHandler} />}
     </div>
   );
 }

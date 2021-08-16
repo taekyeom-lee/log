@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-import classes from './AddModal.module.css';
+import classes from './RightClickModal.module.css';
 
-function AddModal(props) {
+function RightClickModal(props) {
   function addHandler() {
     props.getAddModal();
     props.onClose();
@@ -28,4 +28,4 @@ function AddModal(props) {
   );
 }
 
-export default AddModal;
+export default RightClickModal;
