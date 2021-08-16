@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import classes from './AddModal.module.css';
 
-function EditModal(props) {
+function AddModal(props) {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [isError, setIsError] = useState(false);
@@ -36,7 +36,7 @@ function EditModal(props) {
   }
 
   return (
-    <div className={classes.editModal}>
+    <div className={classes.addModal}>
       <div className={classes.title}>북마크 추가</div>
       <div className={classes.form}>
         <div className={classes.name}>
@@ -71,4 +71,4 @@ function EditModal(props) {
   );
 }
 
-export default EditModal;
+export default AddModal;
