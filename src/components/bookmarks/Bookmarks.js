@@ -5,7 +5,6 @@ import Modal from '../ui/Modal';
 import Backdrop from '../ui/Backdrop';
 import EditModal from '../ui/EditModal';
 import EditBackdrop from '../ui/EditBackdrop';
-import RightClickModal from '../ui/RightClickModal';
 import AddModal from '../ui/AddModal';
 import classes from './Bookmarks.module.css';
 import icon from '../../img/logo512.png';
@@ -16,7 +15,6 @@ function Bookmarks() {
   const [index, setIndex] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const [rightClickModalIsOpen, setRightClickModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [topPosition, setTopPosition] = useState(0);
   const [xPosition, setXPosition] = useState(0);
@@ -38,6 +36,96 @@ function Bookmarks() {
       id: 3,
       url: 'https://www.instagram.com/',
       title: 'Instagram',
+      icon: icon,
+    },
+    {
+      id: 4,
+      url: 'https://www.google.com/',
+      title: 'Google1',
+      icon: icon,
+    },
+    {
+      id: 5,
+      url: 'https://www.netflix.com/',
+      title: 'Netflix1',
+      icon: icon,
+    },
+    {
+      id: 6,
+      url: 'https://www.instagram.com/',
+      title: 'Instagram1',
+      icon: icon,
+    },
+    {
+      id: 7,
+      url: 'https://www.google.com/',
+      title: 'Google2',
+      icon: icon,
+    },
+    {
+      id: 8,
+      url: 'https://www.netflix.com/',
+      title: 'Netflix2',
+      icon: icon,
+    },
+    {
+      id: 9,
+      url: 'https://www.instagram.com/',
+      title: 'Instagram2',
+      icon: icon,
+    },
+    {
+      id: 10,
+      url: 'https://www.google.com/',
+      title: 'Google3',
+      icon: icon,
+    },
+    {
+      id: 11,
+      url: 'https://www.netflix.com/',
+      title: 'Netflix3',
+      icon: icon,
+    },
+    {
+      id: 12,
+      url: 'https://www.instagram.com/',
+      title: 'Instagram3',
+      icon: icon,
+    },
+    {
+      id: 13,
+      url: 'https://www.google.com/',
+      title: 'Google4',
+      icon: icon,
+    },
+    {
+      id: 14,
+      url: 'https://www.netflix.com/',
+      title: 'Netflix4',
+      icon: icon,
+    },
+    {
+      id: 15,
+      url: 'https://www.instagram.com/',
+      title: 'Instagram4',
+      icon: icon,
+    },
+    {
+      id: 16,
+      url: 'https://www.google.com/',
+      title: 'Google5',
+      icon: icon,
+    },
+    {
+      id: 17,
+      url: 'https://www.netflix.com/',
+      title: 'Netflix5',
+      icon: icon,
+    },
+    {
+      id: 18,
+      url: 'https://www.instagram.com/',
+      title: 'Instagram5',
       icon: icon,
     },
   ]);
@@ -142,35 +230,6 @@ function Bookmarks() {
     setMyBookmarksList(newMyBookmarks);
   }
 
-  // RightClickModal
-  function rightClickHandler(e) {
-    if (!addModalIsOpen) {
-      e.preventDefault();
-
-      setYPosition(e.nativeEvent.pageY);
-      setXPosition(e.nativeEvent.pageX);
-
-      openRightClickModalHandler();
-    }
-  }
-
-  function openRightClickModalHandler() {
-    setRightClickModalIsOpen(true);
-  }
-
-  function closeRightClickModalHandler() {
-    setRightClickModalIsOpen(false);
-  }
-
-  // RightClickModal - Add function
-  function openAddModalHandler() {
-    setAddModalIsOpen(true);
-  }
-
-  function closeAddModalHandler() {
-    setAddModalIsOpen(false);
-  }
-
   function saveAddModalHandler(title, url) {
     let newMyBookmarks = [...myBookmarks];
 
@@ -182,8 +241,12 @@ function Bookmarks() {
     setAddModalIsOpen(false);
   }
 
+  function closeAddModalHandler() {
+    setAddModalIsOpen(false);
+  }
+
   return (
-    <div className={classes.bookmarks} onContextMenu={rightClickHandler}>
+    <div className={classes.bookmarks}>
       {myBookmarks.map((myBookmark) => (
         <div
           className={classes.item}
@@ -219,14 +282,6 @@ function Bookmarks() {
           getEditModalSave={saveEditModalHandler}
         />
       )}
-      {rightClickModalIsOpen && (
-        <RightClickModal
-          xPosition={xPosition}
-          yPosition={yPosition}
-          getAddModal={openAddModalHandler}
-          onClose={closeRightClickModalHandler}
-        />
-      )}
       {addModalIsOpen && (
         <AddModal
           title={title}
@@ -237,9 +292,6 @@ function Bookmarks() {
       )}
       {modalIsOpen && <Backdrop onClose={closeModalHadler} />}
       {editModalIsOpen && <EditBackdrop />}
-      {rightClickModalIsOpen && (
-        <Backdrop onClose={closeRightClickModalHandler} />
-      )}
       {addModalIsOpen && <EditBackdrop />}
     </div>
   );
