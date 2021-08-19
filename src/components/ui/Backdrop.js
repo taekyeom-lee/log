@@ -1,7 +1,7 @@
 import classes from './Backdrop.module.css';
 
-function Backdrop(props) {
+function ExtraBackdrop(props) {
   return <div className={classes.backdrop} onClick={props.onClose} />;
 }
 
-export default Backdrop;
+export default ExtraBackdrop;

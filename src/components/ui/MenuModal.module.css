@@ -7,6 +7,7 @@
   font-size: 0.9rem;
   z-index: 10;
   position: fixed;
+  transform: scale(0);
 }
 
 .item {
@@ -20,4 +21,8 @@
 
 .item:hover {
   background-color: silver;
+}
+
+.active {
+  transform: scale(1);
 }

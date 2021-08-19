@@ -4,6 +4,7 @@ import classes from './MenuModal.module.css';
 
 function MenuModal(props) {
   const addBookmarkHandler = () => {
+    props.getAddModal();
     props.onClose();
   };
 
@@ -12,6 +13,9 @@ function MenuModal(props) {
       props.y + 'px';
     document.getElementsByClassName(classes.menuModal)[0].style.left =
       props.x + 'px';
+    document
+      .getElementsByClassName(classes.menuModal)[0]
+      .classList.add(classes.active);
   }, []);
 
   return (
