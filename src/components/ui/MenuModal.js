@@ -8,6 +8,16 @@ function MenuModal(props) {
     props.onClose();
   };
 
+  const editBookmarkHandler = () => {
+    console.log('edit');
+    props.onClose();
+  };
+
+  const removeBookmarkHandler = () => {
+    console.log('remove');
+    props.onClose();
+  };
+
   useEffect(() => {
     document.getElementsByClassName(classes.menuModal)[0].style.top =
       props.y + 'px';
@@ -20,9 +30,21 @@ function MenuModal(props) {
 
   return (
     <div className={classes.menuModal}>
-      <p className={classes.item} onClick={addBookmarkHandler}>
-        새 북마크 추가
-      </p>
+      {props.type === 'contextMenu' && (
+        <p className={classes.contextMenu} onClick={addBookmarkHandler}>
+          새 북마크 추가
+        </p>
+      )}
+      {props.type === 'item' && (
+        <div>
+          <p className={classes.item} onClick={editBookmarkHandler}>
+            편집(E)
+          </p>
+          <p className={classes.item} onClick={removeBookmarkHandler}>
+            삭제(D)
+          </p>
+        </div>
+      )}
     </div>
   );
 }

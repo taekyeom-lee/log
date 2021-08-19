@@ -8,14 +8,11 @@ import Modal from '../ui/Modal';
 import Backdrop from '../ui/Backdrop';
 import classes from './Bookmarks.module.css';
 
-import { bookmarks } from '../../data';
-
 function Bookmarks() {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [myBookmarks, setMyBookmarks] = useState(bookmarks)
 
   const location = useLocation();
 
@@ -49,11 +46,12 @@ function Bookmarks() {
 
   return (
     <div className={classes.bookmarks} onContextMenu={openMenuModalHandler}>
-      <BookmarsList myBookmarks={myBookmarks}/>
+      <BookmarsList />
       {menuModalIsOpen && (
         <MenuModal
           x={x}
           y={y}
+          type="contextMenu"
           getAddModal={openAddModalHandler}
           onClose={closeMenuModalHandler}
         />

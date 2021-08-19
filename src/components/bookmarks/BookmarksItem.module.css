@@ -39,3 +39,7 @@
   border-radius: 18px;
   background-color: #d5d8dc;
 }
+
+.clicked {
+  background-color: #e3eaf7;
+}
