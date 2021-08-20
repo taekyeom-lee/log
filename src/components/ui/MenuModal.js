@@ -4,17 +4,17 @@ import classes from './MenuModal.module.css';
 
 function MenuModal(props) {
   const addBookmarkHandler = () => {
-    props.getAddModal();
+    props.getAddAction();
     props.onClose();
   };
 
   const editBookmarkHandler = () => {
-    console.log('edit');
+    props.getEditAction();
     props.onClose();
   };
 
   const removeBookmarkHandler = () => {
-    console.log('remove');
+    props.getRemoveAction();
     props.onClose();
   };
 

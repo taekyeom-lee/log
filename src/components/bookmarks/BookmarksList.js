@@ -1,33 +1,23 @@
-import { useState } from 'react';
-
 import BookmarksItem from './BookmarksItem';
-import Modal from '../ui/Modal';
-import Backdrop from '../ui/Backdrop';
 import classes from './BookmarksList.module.css';
 
-import { bookmarks } from '../../data';
-
-function BookmarksList() {
-  const [title, setTitle] = useState('');
-  const [url, setUrl] = useState('');
-  const [index, setIndex] = useState(0);
-  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-  const [myBookmarks, setMyBookmarks] = useState(bookmarks);
-
-  const openEditModalHandler = () => {
-    setEditModalIsOpen(true);
+function BookmarksList(props) {
+  const removeHandler = (id) => {
+    props.getRemoveId(id);
   };
 
-  const closeEditModalHandler = () => {
-    setEditModalIsOpen(false);
+  const editHandler = (title, url, id) => {
+    props.getEditValue(title, url, id);
   };
 
   return (
     <div className={classes.bookmarksList}>
-      {myBookmarks.map((myBookmark) => (
+      {props.myBookmarks.map((myBookmark) => (
         <BookmarksItem
           key={myBookmark.id}
           myBookmark={myBookmark}
+          getRemoveId={removeHandler}
+          getEditValue={editHandler}
         />
       ))}
     </div>

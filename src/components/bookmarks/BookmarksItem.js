@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { GoKebabVertical } from 'react-icons/go';
 
+import Modal from '../ui/Modal';
+import Backdrop from '../ui/Backdrop';
 import MenuModal from '../ui/MenuModal';
 import MenuBackdrop from '../ui/MenuBackdrop';
 import classes from './BookmarksItem.module.css';
 
 function BookmarksItem(props) {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
@@ -18,8 +21,12 @@ function BookmarksItem(props) {
     setMenuModalIsOpen(false);
   };
 
-  const clickItemHandler = (id) => (e) => {
-    addClassListClickedHandler(e);
+  const openEditModalHandler = () => {
+    setEditModalIsOpen(true);
+  };
+
+  const closeEditModalHandler = () => {
+    setEditModalIsOpen(false);
   };
 
   const addClassListClickedHandler = (e) => {
@@ -69,11 +76,18 @@ function BookmarksItem(props) {
     }
   };
 
+  const removeHandler = () => {
+    props.getRemoveId(props.myBookmark.id);
+  };
+
+  const saveEditModalHanlder = (title, url) => {
+    props.getEditValue(title, url, props.myBookmark.id);
+
+    closeEditModalHandler();
+  };
+
   return (
-    <div
-      className={classes.bookmarksItem}
-      onClick={clickItemHandler(props.myBookmark.id)}
-    >
+    <div className={classes.bookmarksItem} onClick={addClassListClickedHandler}>
       <img src={props.myBookmark.icon} alt={props.myBookmark.icon} />
       <div className={classes.text}>
         <div>{props.myBookmark.title}</div>
@@ -83,9 +97,26 @@ function BookmarksItem(props) {
         <GoKebabVertical />
       </div>
       {menuModalIsOpen && (
-        <MenuModal x={x} y={y} type="item" onClose={closeMenuModalHandler} />
+        <MenuModal
+          type="item"
+          x={x}
+          y={y}
+          getEditAction={openEditModalHandler}
+          getRemoveAction={removeHandler}
+          onClose={closeMenuModalHandler}
+        />
       )}
       {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModalHandler} />}
+      {editModalIsOpen && (
+        <Modal
+          type="edit"
+          title={props.myBookmark.title}
+          url={props.myBookmark.url}
+          getModalSave={saveEditModalHanlder}
+          getModalCancel={closeEditModalHandler}
+        />
+      )}
+      {editModalIsOpen && <Backdrop onClose={closeEditModalHandler} />}
     </div>
   );
 }

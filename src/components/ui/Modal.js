@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import classes from './Modal.module.css';
 
 function Modal(props) {
+  const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
-  const [isError, setIsError] = useState(false);
 
   const changeTitleHandler = (e) => {
     setTitle(e.target.value);
@@ -21,7 +21,11 @@ function Modal(props) {
 
   const saveHandler = (e) => {
     if (url) {
-      props.getModalSave();
+      if (props.type === 'add') {
+        props.getModalSave(title, url);
+      } else if (props.type === 'edit') {
+        props.getModalSave(title, url);
+      }
     } else {
       alertErrorHandler(e);
     }
@@ -35,9 +39,19 @@ function Modal(props) {
     setIsError(true);
   };
 
+  useEffect(() => {
+    if (props.type === 'edit') {
+      setTitle(props.title);
+      setUrl(props.url);
+    }
+  }, []);
+
   return (
     <div className={classes.modal}>
-      <div className={classes.title}>북마크 추가</div>
+      {props.type === 'add' && <div className={classes.title}>북마크 추가</div>}
+      {props.type === 'edit' && (
+        <div className={classes.title}>북마크 수정</div>
+      )}
       <div className={classes.form}>
         <div className={classes.name}>
           <div className={classes.text}>이름</div>
