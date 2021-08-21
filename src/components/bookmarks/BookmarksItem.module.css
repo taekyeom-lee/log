@@ -17,6 +17,10 @@
   width: 100%;
 }
 
+.text:hover {
+  cursor: default;
+}
+
 .text div {
   margin-left: 20px;
 }

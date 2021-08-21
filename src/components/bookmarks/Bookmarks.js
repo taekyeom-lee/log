@@ -37,7 +37,11 @@ function Bookmarks() {
   };
 
   const setMenuModalLocationHandler = (e) => {
-    if (location.pathname === '/bookmarks') {
+    const substring = 'Backdrop';
+    if (
+      location.pathname === '/bookmarks' &&
+      !e.target.className.includes(substring)
+    ) {
       e.preventDefault();
 
       setY(e.nativeEvent.pageY);
