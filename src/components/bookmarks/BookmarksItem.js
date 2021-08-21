@@ -36,6 +36,7 @@ function BookmarksItem(props) {
     ) {
       removeClassListClickedHandler(e.target.parentNode.childNodes);
       e.target.classList.add(classes.clicked);
+      e.target.childNodes[1].childNodes[1].classList.add(classes.display)
     } else if (
       e.target.parentNode.className === classes.bookmarksItem ||
       e.target.parentNode.className ===
@@ -43,6 +44,7 @@ function BookmarksItem(props) {
     ) {
       removeClassListClickedHandler(e.target.parentNode.parentNode.childNodes);
       e.target.parentNode.classList.add(classes.clicked);
+      e.target.parentNode.childNodes[1].childNodes[1].classList.add(classes.display)
       setMenuModalLocationHandler(e.target);
     } else if (
       e.target.parentNode.parentNode.className === classes.bookmarksItem ||
@@ -53,6 +55,7 @@ function BookmarksItem(props) {
         e.target.parentNode.parentNode.parentNode.childNodes
       );
       e.target.parentNode.parentNode.classList.add(classes.clicked);
+      e.target.parentNode.parentNode.childNodes[1].childNodes[1].classList.add(classes.display)
       setMenuModalLocationHandler(e.target.parentNode);
     }
   };
@@ -60,6 +63,7 @@ function BookmarksItem(props) {
   const removeClassListClickedHandler = (child) => {
     for (let i = 0; i < child.length; i++) {
       child[i].classList.remove(classes.clicked);
+      child[i].childNodes[1].childNodes[1].classList.remove(classes.display)
     }
   };
 

@@ -26,7 +26,7 @@
 }
 
 .url {
-  color: white;
+  display: none;
 }
 
 .image {
@@ -42,6 +42,12 @@
   cursor: pointer;
   border-radius: 18px;
   background-color: #d5d8dc;
+}
+
+.display {
+  display: block;
+  font-size: 0.9rem;
+  color: silver;
 }
 
 .clicked {
