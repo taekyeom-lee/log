@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
 
 import BookmarsList from './BookmarksList';
 import Modal from '../ui/Modal';
@@ -84,16 +87,31 @@ function Bookmarks() {
     setMyBookmarks(newMyBookmarks);
   };
 
+  const moveBookmark = useCallback((dragIndex, hoverIndex) => {
+    const dragBookmark = myBookmarks[dragIndex];
+    setMyBookmarks(
+      update(myBookmarks, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragBookmark],
+        ],
+      })
+    );
+  });
+
   return (
     <div
       className={classes.bookmarks}
       onContextMenu={setMenuModalLocationHandler}
     >
-      <BookmarsList
-        myBookmarks={myBookmarks}
-        getRemoveId={removeBookmarkHandler}
-        getEditValue={editBookmarkHandler}
-      />
+      <DndProvider backend={HTML5Backend}>
+        <BookmarsList
+          myBookmarks={myBookmarks}
+          getRemoveId={removeBookmarkHandler}
+          getEditValue={editBookmarkHandler}
+          moveBookmark={moveBookmark}
+        />
+      </DndProvider>
       {menuModalIsOpen && (
         <MenuModal
           type="contextMenu"

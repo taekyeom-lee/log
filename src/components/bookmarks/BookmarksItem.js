@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 import { GoKebabVertical } from 'react-icons/go';
 
 import Modal from '../ui/Modal';
@@ -7,11 +8,65 @@ import MenuModal from '../ui/MenuModal';
 import MenuBackdrop from '../ui/MenuBackdrop';
 import classes from './BookmarksItem.module.css';
 
+const ItemTypes = {
+  Bookmark: 'bookmark',
+};
+
 function BookmarksItem(props) {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
+  const ref = useRef(null);
+  const index = props.index;
+  const id = props.id;
+  const moveBookmark = props.moveBookmark;
+
+  const [{ handlerId }, drop] = useDrop({
+    accept: ItemTypes.Bookmark,
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = props.index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingReact = ref.current?.getBoundingClientRect();
+      const hoverMiddleY = (hoverIndex.bottom - hoverBoundingReact.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingReact.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      moveBookmark(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.Bookmark,
+    item: () => {
+      console.log('drag', { id, index });
+      return { id, index };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0 : 1;
+
+  drag(drop(ref));
 
   const openMenuModalHandler = () => {
     setMenuModalIsOpen(true);
@@ -36,7 +91,7 @@ function BookmarksItem(props) {
     ) {
       removeClassListClickedHandler(e.target.parentNode.childNodes);
       e.target.classList.add(classes.clicked);
-      e.target.childNodes[1].childNodes[1].classList.add(classes.display)
+      e.target.childNodes[1].childNodes[1].classList.add(classes.display);
     } else if (
       e.target.parentNode.className === classes.bookmarksItem ||
       e.target.parentNode.className ===
@@ -44,7 +99,9 @@ function BookmarksItem(props) {
     ) {
       removeClassListClickedHandler(e.target.parentNode.parentNode.childNodes);
       e.target.parentNode.classList.add(classes.clicked);
-      e.target.parentNode.childNodes[1].childNodes[1].classList.add(classes.display)
+      e.target.parentNode.childNodes[1].childNodes[1].classList.add(
+        classes.display
+      );
       setMenuModalLocationHandler(e.target);
     } else if (
       e.target.parentNode.parentNode.className === classes.bookmarksItem ||
@@ -55,7 +112,9 @@ function BookmarksItem(props) {
         e.target.parentNode.parentNode.parentNode.childNodes
       );
       e.target.parentNode.parentNode.classList.add(classes.clicked);
-      e.target.parentNode.parentNode.childNodes[1].childNodes[1].classList.add(classes.display)
+      e.target.parentNode.parentNode.childNodes[1].childNodes[1].classList.add(
+        classes.display
+      );
       setMenuModalLocationHandler(e.target.parentNode);
     }
   };
@@ -63,7 +122,7 @@ function BookmarksItem(props) {
   const removeClassListClickedHandler = (child) => {
     for (let i = 0; i < child.length; i++) {
       child[i].classList.remove(classes.clicked);
-      child[i].childNodes[1].childNodes[1].classList.remove(classes.display)
+      child[i].childNodes[1].childNodes[1].classList.remove(classes.display);
     }
   };
 
@@ -91,7 +150,12 @@ function BookmarksItem(props) {
   };
 
   return (
-    <div className={classes.bookmarksItem} onClick={addClassListClickedHandler}>
+    <div
+      ref={ref}
+      className={classes.bookmarksItem}
+      style={{ opacity }}
+      onClick={addClassListClickedHandler}
+    >
       <img src={props.myBookmark.icon} alt={props.myBookmark.icon} />
       <div className={classes.text}>
         <div>{props.myBookmark.title}</div>

@@ -12,10 +12,13 @@ function BookmarksList(props) {
 
   return (
     <div className={classes.bookmarksList}>
-      {props.myBookmarks.map((myBookmark) => (
+      {props.myBookmarks.map((myBookmark, index) => (
         <BookmarksItem
           key={myBookmark.id}
+          index={index}
+          id={myBookmark.id}
           myBookmark={myBookmark}
+          moveBookmark={props.moveBookmark}
           getRemoveId={removeHandler}
           getEditValue={editHandler}
         />
