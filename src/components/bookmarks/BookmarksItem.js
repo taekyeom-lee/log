@@ -22,7 +22,7 @@ function BookmarksItem(props) {
   const id = props.id;
   const moveBookmark = props.moveBookmark;
 
-  const [{ handlerId }, drop] = useDrop({
+  const [, drop] = useDrop({
     accept: ItemTypes.Bookmark,
     collect(monitor) {
       return {
@@ -57,7 +57,6 @@ function BookmarksItem(props) {
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.Bookmark,
     item: () => {
-      console.log('drag', { id, index });
       return { id, index };
     },
     collect: (monitor) => ({
@@ -141,11 +140,11 @@ function BookmarksItem(props) {
   };
 
   const removeHandler = () => {
-    props.getRemoveId(props.myBookmark.id);
+    props.getRemoveId(index);
   };
 
   const saveEditModalHanlder = (title, url) => {
-    props.getEditValue(title, url, props.myBookmark.id);
+    props.getEditValue(title, url, index);
 
     closeEditModalHandler();
   };

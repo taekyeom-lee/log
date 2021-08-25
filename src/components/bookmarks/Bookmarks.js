@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -20,6 +20,7 @@ function Bookmarks() {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [myBookmarks, setMyBookmarks] = useState(bookmarks);
+  const nextId = useRef(myBookmarks.length + 1);
 
   const location = useLocation();
 
@@ -57,47 +58,51 @@ function Bookmarks() {
   const addBookmarkHandler = (title, url) => {
     let newMyBookmarks = [...myBookmarks];
 
-    const length = newMyBookmarks.length;
-
-    newMyBookmarks.push({ id: length + 1, title: title, url: url, icon: icon });
+    newMyBookmarks.push({
+      id: nextId.current,
+      title: title,
+      url: url,
+      icon: icon,
+    });
 
     setMyBookmarks(newMyBookmarks);
+
+    nextId.current += 1;
 
     closeAddModalHandler();
   };
 
-  const removeBookmarkHandler = (id) => {
+  const removeBookmarkHandler = (index) => {
     let newMyBookmarks = [...myBookmarks];
 
-    newMyBookmarks.splice(id - 1, 1);
-
-    for (let i = 0; i < newMyBookmarks.length; i++) {
-      newMyBookmarks[i].id = i + 1;
-    }
+    newMyBookmarks.splice(index, 1);
 
     setMyBookmarks(newMyBookmarks);
   };
 
-  const editBookmarkHandler = (title, url, id) => {
+  const editBookmarkHandler = (title, url, index) => {
     let newMyBookmarks = [...myBookmarks];
 
-    newMyBookmarks[id - 1].url = url;
-    newMyBookmarks[id - 1].title = title;
+    newMyBookmarks[index].url = url;
+    newMyBookmarks[index].title = title;
 
     setMyBookmarks(newMyBookmarks);
   };
 
-  const moveBookmark = useCallback((dragIndex, hoverIndex) => {
-    const dragBookmark = myBookmarks[dragIndex];
-    setMyBookmarks(
-      update(myBookmarks, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, dragBookmark],
-        ],
-      })
-    );
-  }, [myBookmarks]);
+  const moveBookmark = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragBookmark = myBookmarks[dragIndex];
+      setMyBookmarks(
+        update(myBookmarks, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragBookmark],
+          ],
+        })
+      );
+    },
+    [myBookmarks]
+  );
 
   return (
     <div
