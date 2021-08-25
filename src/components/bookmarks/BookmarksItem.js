@@ -38,10 +38,11 @@ function BookmarksItem(props) {
       if (dragIndex === hoverIndex) {
         return;
       }
-      const hoverBoundingReact = ref.current?.getBoundingClientRect();
-      const hoverMiddleY = (hoverIndex.bottom - hoverBoundingReact.top) / 2;
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingReact.top;
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }

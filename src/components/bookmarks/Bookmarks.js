@@ -97,7 +97,7 @@ function Bookmarks() {
         ],
       })
     );
-  });
+  }, [myBookmarks]);
 
   return (
     <div
