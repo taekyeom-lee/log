@@ -1,0 +1,27 @@
+.alertModal {
+  width: 300px;
+  height: 52px;
+  padding: 0 24px;
+  margin: 24px;
+  background-color: #333333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;  
+  left: 0;
+  bottom: 0;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+.alert {
+  color: white;
+}
+
+.cancel {
+  color: #6280b1;
+}
+
+.cancel:hover {
+  cursor: pointer;
+}
