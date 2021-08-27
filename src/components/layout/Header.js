@@ -1,18 +1,17 @@
-import { Link } from 'react-router-dom';
-import { GoSearch } from 'react-icons/go';
+import { Link, useLocation } from 'react-router-dom';
 
+import SearchBar from '../ui/SearchBar'
 import classes from './Header.module.css';
 
-function Header(props) {
+function Header() {
+  const location = useLocation();
+
   return (
     <header className={classes.header}>
       <div className={classes.logo}>
         <Link to="/">Christopher Log</Link>
       </div>
-      <div className={classes.search}>
-        <GoSearch className={classes.searchIcon} />
-        <input className={classes.searchInput} placeholder="북마크 검색" />
-      </div>
+      {location.pathname ==='/bookmarks' && <SearchBar />}
       <nav className={classes.nav}>
         <ul>
           <li>
