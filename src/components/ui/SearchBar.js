@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { GoSearch } from 'react-icons/go';
 
-import { setKeyword } from '../../store/actions/bookmarksActions';
+import { setKeyword } from '../../store/action/bookmarkAction';
 
 import classes from './SearchBar.module.css';
 
@@ -21,11 +21,8 @@ function SearchBar() {
 
   const changeHandler = (e) => {
     dispatch(setKeyword(e.target.value));
+    console.log(e.target.value);
   };
-
-  useEffect(() => {
-    dispatch(setKeyword(''));
-  });
 
   return (
     <div className={classes.searchBar}>

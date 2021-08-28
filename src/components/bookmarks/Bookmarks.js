@@ -15,7 +15,8 @@ import classes from './Bookmarks.module.css';
 import { bookmarks } from '../../data';
 import icon from '../../img/logo512.png';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setKeyword } from '../../store/action/bookmarkAction';
 
 function Bookmarks() {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
@@ -31,9 +32,12 @@ function Bookmarks() {
   const location = useLocation();
 
   const selectedData = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const filteredBookmarks = myBookmarks.filter((myBookmarks) =>
-    myBookmarks.title.toLowerCase().includes(selectedData.bookmarks.keyword)
+  let filteredBookmarks;
+
+  filteredBookmarks = myBookmarks.filter((myBookmarks) =>
+    myBookmarks.title.toLowerCase().includes(selectedData.bookmark.keyword)
   );
 
   const openMenuModalHandler = () => {
@@ -137,6 +141,7 @@ function Bookmarks() {
   );
 
   useEffect(() => {
+    dispatch(setKeyword(''));
     if (alertToast) {
       setTimeout(() => setAlertToast(false), 3000);
     }
