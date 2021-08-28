@@ -15,6 +15,8 @@ import classes from './Bookmarks.module.css';
 import { bookmarks } from '../../data';
 import icon from '../../img/logo512.png';
 
+import { useSelector } from 'react-redux';
+
 function Bookmarks() {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -27,6 +29,12 @@ function Bookmarks() {
   const nextId = useRef(myBookmarks.length + 1);
 
   const location = useLocation();
+
+  const selectedData = useSelector((state) => state);
+
+  const filteredBookmarks = myBookmarks.filter((myBookmarks) =>
+    myBookmarks.title.toLowerCase().includes(selectedData.bookmarks.keyword)
+  );
 
   const openMenuModalHandler = () => {
     setMenuModalIsOpen(true);
@@ -141,7 +149,7 @@ function Bookmarks() {
     >
       <DndProvider backend={HTML5Backend}>
         <BookmarsList
-          myBookmarks={myBookmarks}
+          myBookmarks={filteredBookmarks}
           getRemoveId={removeBookmarkHandler}
           getEditValue={editBookmarkHandler}
           moveBookmark={moveBookmark}
