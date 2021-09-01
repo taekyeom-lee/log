@@ -1,4 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { addItem, editItem } from '../../store/action/bookmarkAction';
 
 import classes from './Modal.module.css';
 
@@ -6,6 +9,12 @@ function Modal(props) {
   const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
+  const id = props.id;
+
+  const selectedData = useSelector((state) => state.bookmark.bookmarks);
+  const nextId = useRef(selectedData[selectedData.length - 1].id);
+
+  const dispatch = useDispatch();
 
   const changeTitleHandler = (e) => {
     setTitle(e.target.value);
@@ -22,9 +31,11 @@ function Modal(props) {
   const saveHandler = (e) => {
     if (url) {
       if (props.type === 'add') {
-        props.getModalSave(title, url);
+        dispatch(addItem(nextId.current + 1, title, url));
+        props.getModalCancel();
       } else if (props.type === 'edit') {
-        props.getModalSave(title, url);
+        dispatch(editItem(id, title, url));
+        props.getModalCancel();
       }
     } else {
       alertErrorHandler(e);
@@ -35,7 +46,6 @@ function Modal(props) {
     e.target.parentNode.parentNode.childNodes[1].childNodes[1].childNodes[0].classList.add(
       classes.error
     );
-
     setIsError(true);
   };
 

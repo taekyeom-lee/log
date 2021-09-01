@@ -14,7 +14,7 @@ function MenuModal(props) {
   };
 
   const removeBookmarkHandler = () => {
-    props.getRemoveAction();
+    props.getDeleteAction();
     props.onClose();
   };
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -13,10 +13,13 @@ import AlertToast from '../ui/AlertToast';
 import classes from './Bookmarks.module.css';
 
 import { bookmarks } from '../../data';
-import icon from '../../img/logo512.png';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setKeyword } from '../../store/action/bookmarkAction';
+import {
+  setKeyword,
+  deleteItem,
+  restoreItem,
+} from '../../store/action/bookmarkAction';
 
 function Bookmarks() {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
@@ -25,20 +28,19 @@ function Bookmarks() {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [myBookmarks, setMyBookmarks] = useState(bookmarks);
-  const [deleteItem, setDeleteItem] = useState([]);
+  const [deleteData, setDeleteData] = useState([]);
   const [deleteIndex, setDeleteIndex] = useState(0);
-  const nextId = useRef(myBookmarks.length + 1);
 
   const location = useLocation();
 
-  const selectedData = useSelector((state) => state);
+  const selectedData = useSelector((state) => state.bookmark.bookmarks);
   const dispatch = useDispatch();
 
-  let filteredBookmarks;
+  // let filteredBookmarks;
 
-  filteredBookmarks = myBookmarks.filter((myBookmarks) =>
-    myBookmarks.title.toLowerCase().includes(selectedData.bookmark.keyword)
-  );
+  // filteredBookmarks = myBookmarks.filter((myBookmarks) =>
+  //   myBookmarks.title.toLowerCase().includes(selectedData.bookmark.keyword)
+  // );
 
   const openMenuModalHandler = () => {
     setMenuModalIsOpen(true);
@@ -79,51 +81,23 @@ function Bookmarks() {
     }
   };
 
-  const addBookmarkHandler = (title, url) => {
-    let newMyBookmarks = [...myBookmarks];
-
-    newMyBookmarks.push({
-      id: nextId.current,
-      title: title,
-      url: url,
-      icon: icon,
-    });
-
-    setMyBookmarks(newMyBookmarks);
-
-    nextId.current += 1;
-
-    closeAddModalHandler();
-  };
-
-  const removeBookmarkHandler = (index) => {
-    let newMyBookmarks = [...myBookmarks];
-    setDeleteItem(newMyBookmarks[index]);
+  const removeBookmarkHandler = (id, index) => {
+    setDeleteData(selectedData[index]);
     setDeleteIndex(index);
 
-    newMyBookmarks.splice(index, 1);
-
-    setMyBookmarks(newMyBookmarks);
-
+    dispatch(deleteItem(id));
     openAlertToastHandler();
   };
 
-  const editBookmarkHandler = (title, url, index) => {
-    let newMyBookmarks = [...myBookmarks];
-
-    newMyBookmarks[index].url = url;
-    newMyBookmarks[index].title = title;
-
-    setMyBookmarks(newMyBookmarks);
-  };
-
   const restoreBookmarkHandler = () => {
-    let newMyBookmarks = [...myBookmarks];
-
-    newMyBookmarks.splice(deleteIndex, 0, deleteItem);
-
-    setMyBookmarks(newMyBookmarks);
+    dispatch(restoreItem(deleteIndex, deleteData));
   };
+
+  useEffect(() => {
+    if (alertToast) {
+      setTimeout(() => setAlertToast(false), 3000);
+    }
+  }, [alertToast]);
 
   const moveBookmark = useCallback(
     (dragIndex, hoverIndex) => {
@@ -142,10 +116,7 @@ function Bookmarks() {
 
   useEffect(() => {
     dispatch(setKeyword(''));
-    if (alertToast) {
-      setTimeout(() => setAlertToast(false), 3000);
-    }
-  }, [alertToast]);
+  }, []);
 
   return (
     <div
@@ -154,10 +125,9 @@ function Bookmarks() {
     >
       <DndProvider backend={HTML5Backend}>
         <BookmarsList
-          myBookmarks={filteredBookmarks}
-          getRemoveId={removeBookmarkHandler}
-          getEditValue={editBookmarkHandler}
+          myBookmarks={selectedData}
           moveBookmark={moveBookmark}
+          getDeleteAction={removeBookmarkHandler}
         />
       </DndProvider>
       {menuModalIsOpen && (
@@ -171,16 +141,13 @@ function Bookmarks() {
       )}
       {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModalHandler} />}
       {addModalIsOpen && (
-        <Modal
-          type="add"
-          getModalSave={addBookmarkHandler}
-          getModalCancel={closeAddModalHandler}
-        />
+        <Modal type="add" getModalCancel={closeAddModalHandler} />
       )}
       {addModalIsOpen && <Backdrop onClose={closeAddModalHandler} />}
+
       {alertToast && (
         <AlertToast
-          title={deleteItem.title}
+          title={deleteData.title}
           onClose={closeAlertToastHandler}
           onCancel={restoreBookmarkHandler}
         />

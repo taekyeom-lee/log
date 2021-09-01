@@ -18,6 +18,7 @@ function BookmarksItem(props) {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const ref = useRef(null);
+
   const index = props.index;
   const id = props.id;
   const moveBookmark = props.moveBookmark;
@@ -139,14 +140,8 @@ function BookmarksItem(props) {
     }
   };
 
-  const removeHandler = () => {
-    props.getRemoveId(index);
-  };
-
-  const saveEditModalHanlder = (title, url) => {
-    props.getEditValue(title, url, index);
-
-    closeEditModalHandler();
+  const removeBookmarkHandler = () => {
+    props.getDeleteAction(id, index);
   };
 
   return (
@@ -169,8 +164,9 @@ function BookmarksItem(props) {
           type="item"
           x={x}
           y={y}
+          id={props.myBookmark.id}
+          getDeleteAction={removeBookmarkHandler}
           getEditAction={openEditModalHandler}
-          getRemoveAction={removeHandler}
           onClose={closeMenuModalHandler}
         />
       )}
@@ -180,7 +176,7 @@ function BookmarksItem(props) {
           type="edit"
           title={props.myBookmark.title}
           url={props.myBookmark.url}
-          getModalSave={saveEditModalHanlder}
+          id={props.myBookmark.id}
           getModalCancel={closeEditModalHandler}
         />
       )}
