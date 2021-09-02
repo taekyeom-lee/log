@@ -2,8 +2,8 @@ import BookmarksItem from './BookmarksItem';
 import classes from './BookmarksList.module.css';
 
 function BookmarksList(props) {
-  const removeBookmarkHandler = (id, index) => {
-    props.getDeleteAction(id, index);
+  const removeBookmarkHandler = (id) => {
+    props.getDeleteAction(id);
   };
 
   return (

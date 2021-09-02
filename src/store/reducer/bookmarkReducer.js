@@ -9,11 +9,6 @@ const initState = {
 
 const bookmarkReducer = (state = initState, action) => {
   switch (action.type) {
-    case bookmarkAction.SET_KEYWORD:
-      return {
-        ...state,
-        keyword: action.keyword,
-      };
     case bookmarkAction.BOOKMARK_SET_KEYWORD:
       return {
         ...state,

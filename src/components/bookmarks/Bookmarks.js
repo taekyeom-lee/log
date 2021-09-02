@@ -3,7 +3,13 @@ import { useLocation } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
+import { useSelector, useDispatch } from 'react-redux';
 
+import {
+  setKeyword,
+  deleteItem,
+  restoreItem,
+} from '../../store/action/bookmarkAction';
 import BookmarsList from './BookmarksList';
 import Modal from '../ui/Modal';
 import Backdrop from '../ui/Backdrop';
@@ -12,35 +18,28 @@ import MenuBackdrop from '../ui/MenuBackdrop';
 import AlertToast from '../ui/AlertToast';
 import classes from './Bookmarks.module.css';
 
-import { bookmarks } from '../../data';
-
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  setKeyword,
-  deleteItem,
-  restoreItem,
-} from '../../store/action/bookmarkAction';
-
 function Bookmarks() {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [alertToast, setAlertToast] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [myBookmarks, setMyBookmarks] = useState(bookmarks);
   const [deleteData, setDeleteData] = useState([]);
   const [deleteIndex, setDeleteIndex] = useState(0);
 
   const location = useLocation();
 
+  const selected = useSelector((state) => state.bookmark);
   const selectedData = useSelector((state) => state.bookmark.bookmarks);
   const dispatch = useDispatch();
 
-  // let filteredBookmarks;
+  // const [myBookmarks, setMyBookmarks] = useState(selectedData);
 
-  // filteredBookmarks = myBookmarks.filter((myBookmarks) =>
-  //   myBookmarks.title.toLowerCase().includes(selectedData.bookmark.keyword)
-  // );
+  let filteredBookmarks;
+
+  filteredBookmarks = selectedData.filter((selectedData) =>
+    selectedData.title.toLowerCase().includes(selected.keyword)
+  );
 
   const openMenuModalHandler = () => {
     setMenuModalIsOpen(true);
@@ -81,9 +80,14 @@ function Bookmarks() {
     }
   };
 
-  const removeBookmarkHandler = (id, index) => {
-    setDeleteData(selectedData[index]);
-    setDeleteIndex(index);
+  const removeBookmarkHandler = (id) => {
+    const data = selectedData.filter((selectedData) => selectedData.id === id);
+    const dataIndex = selectedData.findIndex(
+      (selectedData) => selectedData.id === id
+    );
+
+    setDeleteData(data[0]);
+    setDeleteIndex(dataIndex);
 
     dispatch(deleteItem(id));
     openAlertToastHandler();
@@ -99,19 +103,34 @@ function Bookmarks() {
     }
   }, [alertToast]);
 
+  // const moveBookmark = useCallback(
+  //   (dragIndex, hoverIndex) => {
+  //     const dragBookmark = myBookmarks[dragIndex];
+  //     setMyBookmarks(
+  //       update(myBookmarks, {
+  //         $splice: [
+  //           [dragIndex, 1],
+  //           [hoverIndex, 0, dragBookmark],
+  //         ],
+  //       })
+  //     );
+  //   },
+  //   [myBookmarks]
+  // );
+
   const moveBookmark = useCallback(
     (dragIndex, hoverIndex) => {
-      const dragBookmark = myBookmarks[dragIndex];
-      setMyBookmarks(
-        update(myBookmarks, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, dragBookmark],
-          ],
-        })
-      );
+      // const dragBookmark = selectedData[dragIndex];
+      // setMyBookmarks(
+      //   update(selectedData, {
+      //     $splice: [
+      //       [dragIndex, 1],
+      //       [hoverIndex, 0, dragBookmark],
+      //     ],
+      //   })
+      // );
     },
-    [myBookmarks]
+    [selectedData]
   );
 
   useEffect(() => {
@@ -125,7 +144,7 @@ function Bookmarks() {
     >
       <DndProvider backend={HTML5Backend}>
         <BookmarsList
-          myBookmarks={selectedData}
+          myBookmarks={filteredBookmarks}
           moveBookmark={moveBookmark}
           getDeleteAction={removeBookmarkHandler}
         />

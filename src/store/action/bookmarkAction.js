@@ -1,4 +1,3 @@
-export const SET_KEYWORD = 'SET_KEYWORD';
 export const BOOKMARK_SET_KEYWORD = 'BOOKMARK_SET_KEYWORD';
 export const BOOKMARK_ADD_ITEM = 'BOOKMARK_ADD_ITEM';
 export const BOOKMARK_DELETE_ITEM = 'BOOKMARK_DELETE_ITEM';
@@ -7,7 +6,7 @@ export const BOOKMARK_RESTORE_ITEM = 'BOOKMARK_RESTORE_ITEM';
 
 export const setKeyword = (keyword) => {
   return {
-    type: SET_KEYWORD,
+    type: BOOKMARK_SET_KEYWORD,
     keyword,
   };
 };

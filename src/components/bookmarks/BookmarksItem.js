@@ -141,7 +141,7 @@ function BookmarksItem(props) {
   };
 
   const removeBookmarkHandler = () => {
-    props.getDeleteAction(id, index);
+    props.getDeleteAction(id);
   };
 
   return (
