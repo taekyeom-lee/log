@@ -1,6 +1,6 @@
 import * as bookmarkAction from '../action/bookmarkAction';
-import icon from '../../img/logo512.png';
-import { bookmarks } from '../../data';
+import icon from '../../resources/img/logo512.png';
+import { bookmarks } from '../../resources/data';
 
 const initState = {
   keyword: '',

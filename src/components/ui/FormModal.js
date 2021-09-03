@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { addItem, editItem } from '../../store/action/bookmarkAction';
 
-import classes from './Modal.module.css';
+import classes from './FormModal.module.css';
 
-function Modal(props) {
+function FormModal(props) {
   const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -13,7 +13,6 @@ function Modal(props) {
 
   const selectedData = useSelector((state) => state.bookmark.bookmarks);
   const nextId = useRef(selectedData[selectedData.length - 1].id);
-
   const dispatch = useDispatch();
 
   const changeTitleHandler = (e) => {
@@ -25,17 +24,17 @@ function Modal(props) {
   };
 
   const cancelHandler = () => {
-    props.getModalCancel();
+    props.onClose();
   };
 
   const saveHandler = (e) => {
     if (url) {
       if (props.type === 'add') {
         dispatch(addItem(nextId.current + 1, title, url));
-        props.getModalCancel();
+        props.onClose();
       } else if (props.type === 'edit') {
         dispatch(editItem(id, title, url));
-        props.getModalCancel();
+        props.onClose();
       }
     } else {
       alertErrorHandler(e);
@@ -57,7 +56,7 @@ function Modal(props) {
   }, []);
 
   return (
-    <div className={classes.modal}>
+    <div className={classes.formModal}>
       {props.type === 'add' && <div className={classes.title}>북마크 추가</div>}
       {props.type === 'edit' && (
         <div className={classes.title}>북마크 수정</div>
@@ -95,4 +94,4 @@ function Modal(props) {
   );
 }
 
-export default Modal;
+export default FormModal;

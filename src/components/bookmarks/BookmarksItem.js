@@ -2,8 +2,8 @@ import { useState, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { GoKebabVertical } from 'react-icons/go';
 
-import Modal from '../ui/Modal';
-import Backdrop from '../ui/Backdrop';
+import FormModal from '../ui/FormModal';
+import FormBackdrop from '../ui/FormBackdrop';
 import MenuModal from '../ui/MenuModal';
 import MenuBackdrop from '../ui/MenuBackdrop';
 import classes from './BookmarksItem.module.css';
@@ -14,7 +14,7 @@ const ItemTypes = {
 
 function BookmarksItem(props) {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
-  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const [formModalIsOpen, setFormModalIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const ref = useRef(null);
@@ -77,12 +77,12 @@ function BookmarksItem(props) {
     setMenuModalIsOpen(false);
   };
 
-  const openEditModalHandler = () => {
-    setEditModalIsOpen(true);
+  const openFormModalHandler = () => {
+    setFormModalIsOpen(true);
   };
 
-  const closeEditModalHandler = () => {
-    setEditModalIsOpen(false);
+  const closeFormModalHandler = () => {
+    setFormModalIsOpen(false);
   };
 
   const addClassListClickedHandler = (e) => {
@@ -166,21 +166,21 @@ function BookmarksItem(props) {
           y={y}
           id={props.myBookmark.id}
           getDeleteAction={removeBookmarkHandler}
-          getEditAction={openEditModalHandler}
+          getEditAction={openFormModalHandler}
           onClose={closeMenuModalHandler}
         />
       )}
       {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModalHandler} />}
-      {editModalIsOpen && (
-        <Modal
+      {formModalIsOpen && (
+        <FormModal
           type="edit"
           title={props.myBookmark.title}
           url={props.myBookmark.url}
           id={props.myBookmark.id}
-          getModalCancel={closeEditModalHandler}
+          onClose={closeFormModalHandler}
         />
       )}
-      {editModalIsOpen && <Backdrop onClose={closeEditModalHandler} />}
+      {formModalIsOpen && <FormBackdrop onClose={closeFormModalHandler} />}
     </div>
   );
 }

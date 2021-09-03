@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import update from 'immutability-helper';
+// import update from 'immutability-helper';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -11,8 +11,8 @@ import {
   restoreItem,
 } from '../../store/action/bookmarkAction';
 import BookmarsList from './BookmarksList';
-import Modal from '../ui/Modal';
-import Backdrop from '../ui/Backdrop';
+import FormModal from '../ui/FormModal';
+import FormBackdrop from '../ui/FormBackdrop';
 import MenuModal from '../ui/MenuModal';
 import MenuBackdrop from '../ui/MenuBackdrop';
 import AlertToast from '../ui/AlertToast';
@@ -20,7 +20,7 @@ import classes from './Bookmarks.module.css';
 
 function Bookmarks() {
   const [menuModalIsOpen, setMenuModalIsOpen] = useState(false);
-  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [formModalIsOpen, setFormModalIsOpen] = useState(false);
   const [alertToast, setAlertToast] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
@@ -32,8 +32,6 @@ function Bookmarks() {
   const selected = useSelector((state) => state.bookmark);
   const selectedData = useSelector((state) => state.bookmark.bookmarks);
   const dispatch = useDispatch();
-
-  // const [myBookmarks, setMyBookmarks] = useState(selectedData);
 
   let filteredBookmarks;
 
@@ -49,12 +47,12 @@ function Bookmarks() {
     setMenuModalIsOpen(false);
   };
 
-  const openAddModalHandler = () => {
-    setAddModalIsOpen(true);
+  const openFormModalHandler = () => {
+    setFormModalIsOpen(true);
   };
 
-  const closeAddModalHandler = () => {
-    setAddModalIsOpen(false);
+  const closeFormModalHandler = () => {
+    setFormModalIsOpen(false);
   };
 
   const openAlertToastHandler = () => {
@@ -119,18 +117,18 @@ function Bookmarks() {
   // );
 
   const moveBookmark = useCallback(
-    (dragIndex, hoverIndex) => {
-      // const dragBookmark = selectedData[dragIndex];
-      // setMyBookmarks(
-      //   update(selectedData, {
-      //     $splice: [
-      //       [dragIndex, 1],
-      //       [hoverIndex, 0, dragBookmark],
-      //     ],
-      //   })
-      // );
-    },
-    [selectedData]
+    // (dragIndex, hoverIndex) => {
+    //   const dragBookmark = selectedData[dragIndex];
+    //   setMyBookmarks(
+    //     update(selectedData, {
+    //       $splice: [
+    //         [dragIndex, 1],
+    //         [hoverIndex, 0, dragBookmark],
+    //       ],
+    //     })
+    //   );
+    // },
+    // [selectedData]
   );
 
   useEffect(() => {
@@ -154,16 +152,15 @@ function Bookmarks() {
           type="contextMenu"
           x={x}
           y={y}
-          getAddAction={openAddModalHandler}
+          getAddAction={openFormModalHandler}
           onClose={closeMenuModalHandler}
         />
       )}
       {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModalHandler} />}
-      {addModalIsOpen && (
-        <Modal type="add" getModalCancel={closeAddModalHandler} />
+      {formModalIsOpen && (
+        <FormModal type="add" onClose={closeFormModalHandler} />
       )}
-      {addModalIsOpen && <Backdrop onClose={closeAddModalHandler} />}
-
+      {formModalIsOpen && <FormBackdrop onClose={closeFormModalHandler} />}
       {alertToast && (
         <AlertToast
           title={deleteData.title}
