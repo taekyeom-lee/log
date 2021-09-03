@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addItem, editItem } from '../../store/action/bookmarkAction';
+import { addItem, editItem, setId } from '../../store/action/bookmarkAction';
 
 import classes from './FormModal.module.css';
 
@@ -9,11 +9,9 @@ function FormModal(props) {
   const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
-  // const [type, setType] = useState('');
   const id = props.id;
 
-  const selectedData = useSelector((state) => state.bookmark.bookmarks);
-  const nextId = useRef(selectedData[selectedData.length - 1].id);
+  const selectedId = useSelector((state) => state.bookmark.currentId);
   const dispatch = useDispatch();
 
   const changeTitleHandler = (e) => {
@@ -31,7 +29,8 @@ function FormModal(props) {
   const saveHandler = (e) => {
     if (url) {
       if (props.type === 'add') {
-        dispatch(addItem(nextId.current + 1, title, url));
+        dispatch(addItem(selectedId + 1, title, url));
+        dispatch(setId(selectedId + 1));
         props.onClose();
       } else if (props.type === 'edit') {
         dispatch(editItem(id, title, url));

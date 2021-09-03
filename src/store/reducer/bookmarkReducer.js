@@ -4,6 +4,7 @@ import { bookmarks } from '../../resources/data';
 
 const initState = {
   keyword: '',
+  currentId: bookmarks[bookmarks.length - 1].id,
   bookmarks: bookmarks,
 };
 
@@ -13,6 +14,11 @@ const bookmarkReducer = (state = initState, action) => {
       return {
         ...state,
         keyword: action.keyword,
+      };
+    case bookmarkAction.BOOKMARK_SET_ID:
+      return {
+        ...state,
+        currentId: action.currentId,
       };
     case bookmarkAction.BOOKMARK_ADD_ITEM:
       return {
@@ -46,6 +52,14 @@ const bookmarkReducer = (state = initState, action) => {
       return {
         ...state,
         bookmarks: newBookmarks,
+      };
+    case bookmarkAction.BOOKMARK_UPDATE_ITEM:
+      const updateBookmarks = state.bookmarks;
+      updateBookmarks.splice(action.dragIndex, 1);
+      updateBookmarks.splice(action.hoverIndex, 0, action.dragBookmark);
+      return {
+        ...state,
+        bookmarks: updateBookmarks,
       };
     default:
       return state;

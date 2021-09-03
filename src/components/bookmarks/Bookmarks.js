@@ -2,13 +2,13 @@ import { useState, useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-// import update from 'immutability-helper';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
   setKeyword,
   deleteItem,
   restoreItem,
+  updateItem,
 } from '../../store/action/bookmarkAction';
 import BookmarsList from './BookmarksList';
 import FormModal from '../ui/FormModal';
@@ -95,42 +95,20 @@ function Bookmarks() {
     dispatch(restoreItem(deleteIndex, deleteData));
   };
 
+  const moveBookmark = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragBookmark = selectedData[dragIndex];
+      dispatch(updateItem(dragIndex, hoverIndex, dragBookmark));
+    },
+    [dispatch, selectedData]
+  );
+
   useEffect(() => {
     dispatch(setKeyword(''));
     if (alertToast) {
       setTimeout(() => setAlertToast(false), 3000);
     }
   }, [dispatch, alertToast]);
-
-  // const moveBookmark = useCallback(
-  //   (dragIndex, hoverIndex) => {
-  //     const dragBookmark = myBookmarks[dragIndex];
-  //     setMyBookmarks(
-  //       update(myBookmarks, {
-  //         $splice: [
-  //           [dragIndex, 1],
-  //           [hoverIndex, 0, dragBookmark],
-  //         ],
-  //       })
-  //     );
-  //   },
-  //   [myBookmarks]
-  // );
-
-  const moveBookmark = useCallback(
-    // (dragIndex, hoverIndex) => {
-    //   const dragBookmark = selectedData[dragIndex];
-    //   setMyBookmarks(
-    //     update(selectedData, {
-    //       $splice: [
-    //         [dragIndex, 1],
-    //         [hoverIndex, 0, dragBookmark],
-    //       ],
-    //     })
-    //   );
-    // },
-    // [selectedData]
-  );
 
   return (
     <div

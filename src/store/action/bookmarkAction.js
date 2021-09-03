@@ -1,13 +1,22 @@
 export const BOOKMARK_SET_KEYWORD = 'BOOKMARK_SET_KEYWORD';
+export const BOOKMARK_SET_ID = 'BOOKMARK_SET_ID';
 export const BOOKMARK_ADD_ITEM = 'BOOKMARK_ADD_ITEM';
 export const BOOKMARK_DELETE_ITEM = 'BOOKMARK_DELETE_ITEM';
 export const BOOKMARK_EDIT_ITEM = 'BOOKMARK_EDIT_ITEM';
 export const BOOKMARK_RESTORE_ITEM = 'BOOKMARK_RESTORE_ITEM';
+export const BOOKMARK_UPDATE_ITEM = 'BOOKMARK_UPDATE_ITEM';
 
 export const setKeyword = (keyword) => {
   return {
     type: BOOKMARK_SET_KEYWORD,
     keyword,
+  };
+};
+
+export const setId = (currentId) => {
+  return {
+    type: BOOKMARK_SET_ID,
+    currentId,
   };
 };
 
@@ -41,5 +50,14 @@ export const restoreItem = (index, item) => {
     type: BOOKMARK_RESTORE_ITEM,
     index,
     item,
+  };
+};
+
+export const updateItem = (dragIndex, hoverIndex, dragBookmark) => {
+  return {
+    type: BOOKMARK_UPDATE_ITEM,
+    dragIndex,
+    hoverIndex,
+    dragBookmark,
   };
 };
