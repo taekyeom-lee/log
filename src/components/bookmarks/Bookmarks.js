@@ -96,10 +96,11 @@ function Bookmarks() {
   };
 
   useEffect(() => {
+    dispatch(setKeyword(''));
     if (alertToast) {
       setTimeout(() => setAlertToast(false), 3000);
     }
-  }, [alertToast]);
+  }, [dispatch, alertToast]);
 
   // const moveBookmark = useCallback(
   //   (dragIndex, hoverIndex) => {
@@ -130,10 +131,6 @@ function Bookmarks() {
     // },
     // [selectedData]
   );
-
-  useEffect(() => {
-    dispatch(setKeyword(''));
-  }, []);
 
   return (
     <div

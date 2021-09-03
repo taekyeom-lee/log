@@ -9,6 +9,7 @@ function FormModal(props) {
   const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
+  // const [type, setType] = useState('');
   const id = props.id;
 
   const selectedData = useSelector((state) => state.bookmark.bookmarks);
@@ -53,7 +54,7 @@ function FormModal(props) {
       setTitle(props.title);
       setUrl(props.url);
     }
-  }, []);
+  }, [props.type, props.title, props.url]);
 
   return (
     <div className={classes.formModal}>

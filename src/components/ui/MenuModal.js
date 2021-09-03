@@ -26,7 +26,7 @@ function MenuModal(props) {
     document
       .getElementsByClassName(classes.menuModal)[0]
       .classList.add(classes.active);
-  }, []);
+  }, [props.y, props.x]);
 
   return (
     <div className={classes.menuModal}>

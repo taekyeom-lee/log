@@ -21,7 +21,6 @@ function SearchBar() {
 
   const changeHandler = (e) => {
     dispatch(setKeyword(e.target.value));
-    console.log(e.target.value);
   };
 
   return (
