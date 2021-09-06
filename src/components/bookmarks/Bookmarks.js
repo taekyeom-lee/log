@@ -10,6 +10,7 @@ import {
   restoreItem,
   updateItem,
 } from '../../store/action/bookmarkAction';
+import BookmarksFolder from './BookmarksFolder';
 import BookmarsList from './BookmarksList';
 import FormModal from '../ui/FormModal';
 import FormBackdrop from '../ui/FormBackdrop';
@@ -115,6 +116,7 @@ function Bookmarks() {
       className={classes.bookmarks}
       onContextMenu={setMenuModalLocationHandler}
     >
+      <BookmarksFolder />
       <DndProvider backend={HTML5Backend}>
         <BookmarsList
           myBookmarks={filteredBookmarks}

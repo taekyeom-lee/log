@@ -1,0 +1,49 @@
+.bookmarksFolderNode {  
+  display: flex;
+  align-items: center;
+  width: 256px;
+  height: 40px;
+}
+
+.verticalTab {
+  display: flex;
+  align-items: center;
+  width: 4px;
+  height: 33px;
+  background-color: #1a73eb;
+  border-radius: 4px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon:hover {
+  background-color: #e5e5e5;
+  border-radius: 50px;
+}
+
+.ironIcon {
+  width: 12px;
+  height: 12px;
+  color: #797A7D;
+}
+
+.folderIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.innerContainer {
+  display: flex;
+  align-items: center;
+}
+
+.menuLabel {
+  padding: 0 6px;
+  font-size: 0.8rem;
+}
