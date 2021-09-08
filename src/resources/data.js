@@ -38,3 +38,49 @@ export const bookmarks = [
     icon: icon,
   },
 ];
+
+
+export const folders = [
+  {
+    id: 1,
+    title: '북마크 1',
+  },
+  {
+    id: 2,
+    title: '북마크 2',
+  },
+  // {
+  //   // id: 1,
+  //   // depth: 1,
+  //   // title: '북마크 1',
+  //   // subFolder: [
+  //   //   {
+  //   //     id: 1,
+  //   //     depth: 2,
+  //   //     title: '하위 북마크 1',
+  //   //     subFolder: [
+  //   //       {
+  //   //         id: 1,
+  //   //         depth: 3,
+  //   //         title: '하위 북마크 11'
+  //   //       },
+  //   //       {
+  //   //         id: 2,
+  //   //         depth: 3,
+  //   //         title: '하위 북마크 22'
+  //   //       },
+  //   //       {
+  //   //         id: 3,
+  //   //         depth: 3,
+  //   //         title: '하위 북마크 33'
+  //   //       }
+  //   //     ]
+  //   //   },
+  //   //   {
+  //   //     id: 2,
+  //   //     depth: 2,
+  //   //     title: '하위 북마크 2'
+  //   //   }
+  //   // ]
+  // },
+] 

@@ -6,11 +6,8 @@
 }
 
 .verticalTab {
-  display: flex;
-  align-items: center;
   width: 4px;
   height: 33px;
-  background-color: #1a73eb;
   border-radius: 4px;
 }
 
@@ -23,6 +20,7 @@
 }
 
 .icon:hover {
+  cursor: pointer;
   background-color: #e5e5e5;
   border-radius: 50px;
 }
@@ -46,4 +44,9 @@
 .menuLabel {
   padding: 0 6px;
   font-size: 0.8rem;
+}
+
+.folderIcon:hover,
+.menuLabel:hover {
+  cursor: pointer;
 }
