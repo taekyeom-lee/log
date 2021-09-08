@@ -1,21 +1,21 @@
 import { useState, useRef } from 'react';
-import { FcFolder, FcOpenedFolder } from 'react-icons/fc';
 import { AiFillCaretDown, AiFillCaretRight } from 'react-icons/ai';
+import Folder from '../../resources/img/folder.svg';
+import OpenedFolder from '../../resources/img/opened_folder.svg';
 
 import classes from './BookmarksFolderNode.module.css';
 
 function BookmarksFolderNode(props) {
-  const [isSelected, setIsSelected] = useState(false);
   const [folderIsOpen, setFolderIsOpen] = useState(false);
   const tab = useRef();
+  const img = useRef();
   const title = useRef();
 
   const selectFolderHandler = () => {
     props.onSelected();
 
-    setIsSelected((prevState) => !prevState);
-
     tab.current.style.backgroundColor = '#1a73eb';
+    img.current.src = OpenedFolder;
     title.current.style.color = '#1a73eb';
   };
 
@@ -34,17 +34,7 @@ function BookmarksFolderNode(props) {
             <AiFillCaretRight className={classes.ironIcon} />
           )}
         </div>
-        {isSelected ? (
-          <FcOpenedFolder
-            className={classes.folderIcon}
-            onClick={selectFolderHandler}
-          />
-        ) : (
-          <FcFolder
-            className={classes.folderIcon}
-            onClick={selectFolderHandler}
-          />
-        )}
+        <img src={Folder} className={classes.folderIcon} ref={img} />
         <div
           className={classes.menuLabel}
           onClick={selectFolderHandler}
