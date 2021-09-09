@@ -1,29 +1,30 @@
+import { useState } from 'react';
+
 import BookmarksFolderNode from './BookmarksFolderNode';
 import classes from './BookmarksFolder.module.css';
-import Folder from '../../resources/img/folder.svg';
 
 import { folders } from '../../resources/data';
-import { useRef } from 'react';
 
 function BookmarksFolder() {
-  const node = useRef();
+  const [foldersSelected, setFoldersSelected] = useState(
+    new Array(folders.length).fill(false)
+  );
 
-  const selectFolderHandler = () => {
-    for (let i = 0; i < node.current.children.length; i++) {
-      node.current.children[i].children[0].style.backgroundColor =
-        'transparent';
-      node.current.children[i].children[1].children[1].src = Folder;
-      node.current.children[i].children[1].children[2].style.color = 'black';
-    }
+  const selectFolder = (index) => {
+    let result = new Array(folders.length).fill(false);
+    result[index] = true;
+    setFoldersSelected(result);
   };
 
   return (
-    <div className={classes.bookmarksFolder} ref={node}>
-      {folders.map((folder) => (
+    <div className={classes.bookmarksFolder}>
+      {folders.map((folder, index) => (
         <BookmarksFolderNode
           key={folder.id}
           folder={folder}
-          onSelected={selectFolderHandler}
+          isSelected={foldersSelected[index]}
+          select={(index) => selectFolder(index)}
+          index={index}
         />
       ))}
     </div>

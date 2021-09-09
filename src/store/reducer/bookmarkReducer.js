@@ -6,6 +6,10 @@ const initState = {
   keyword: '',
   currentId: bookmarks[bookmarks.length - 1].id,
   bookmarks: bookmarks,
+  currentIndex: 1,
+  currentDepth: 1,
+  prevIndex: 1,
+  prevDepth: 1,
 };
 
 const bookmarkReducer = (state = initState, action) => {
@@ -60,6 +64,18 @@ const bookmarkReducer = (state = initState, action) => {
       return {
         ...state,
         bookmarks: updateBookmarks,
+      };
+    case bookmarkAction.BOOKMARK_UPDATE_CURRENT:
+      return {
+        ...state,
+        currentIndex: action.currentIndex,
+        currentDepth: action.currentDepth,
+      };
+    case bookmarkAction.BOOKMARK_UPDATE_PREV:
+      return {
+        ...state,
+        prevIndex: action.prevIndex,
+        prevDepth: action.prevDeth,
       };
     default:
       return state;

@@ -6,6 +6,9 @@ export const BOOKMARK_EDIT_ITEM = 'BOOKMARK_EDIT_ITEM';
 export const BOOKMARK_RESTORE_ITEM = 'BOOKMARK_RESTORE_ITEM';
 export const BOOKMARK_UPDATE_ITEM = 'BOOKMARK_UPDATE_ITEM';
 
+export const BOOKMARK_UPDATE_CURRENT = 'BOOKMARK_UPDATE_CURRENT';
+export const BOOKMARK_UPDATE_PREV = 'BOOKMARK_UPDATE_PREV';
+
 export const setKeyword = (keyword) => {
   return {
     type: BOOKMARK_SET_KEYWORD,
@@ -59,5 +62,21 @@ export const updateItem = (dragIndex, hoverIndex, dragBookmark) => {
     dragIndex,
     hoverIndex,
     dragBookmark,
+  };
+};
+
+export const updateCurrent = (currentIndex, currentDepth) => {
+  return {
+    type: BOOKMARK_UPDATE_CURRENT,
+    currentIndex,
+    currentDepth,
+  };
+};
+
+export const updatePrev = (prevIndex, prevDepth) => {
+  return {
+    type: BOOKMARK_UPDATE_PREV,
+    prevIndex,
+    prevDepth,
   };
 };

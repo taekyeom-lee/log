@@ -1,14 +1,27 @@
 .bookmarksFolderNode {  
+  
+}
+
+.bookmarksMainFolderNode {
   display: flex;
   align-items: center;
-  width: 256px;
+  width: 260px;
   height: 40px;
+}
+
+.bookmarksSubFolderNode {
+
 }
 
 .verticalTab {
   width: 4px;
   height: 33px;
   border-radius: 4px;
+}
+
+.innerContainer {
+  display: flex;
+  align-items: center;
 }
 
 .icon {
@@ -36,12 +49,8 @@
   height: 20px;
 }
 
-.innerContainer {
-  display: flex;
-  align-items: center;
-}
-
 .menuLabel {
+  /* width: 196px; */
   padding: 0 6px;
   font-size: 0.8rem;
 }
