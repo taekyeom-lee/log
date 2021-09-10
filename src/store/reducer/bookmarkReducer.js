@@ -6,9 +6,9 @@ const initState = {
   keyword: '',
   currentId: bookmarks[bookmarks.length - 1].id,
   bookmarks: bookmarks,
-  currentIndex: 1,
+  currentRoute: [],
   currentDepth: 1,
-  prevIndex: 1,
+  prevRoute: [],
   prevDepth: 1,
 };
 
@@ -65,18 +65,35 @@ const bookmarkReducer = (state = initState, action) => {
         ...state,
         bookmarks: updateBookmarks,
       };
-    case bookmarkAction.BOOKMARK_UPDATE_CURRENT:
+    case bookmarkAction.BOOKMARK_UPDATE_CURRENT_ROUTE:
       return {
         ...state,
-        currentIndex: action.currentIndex,
+        currentRoute: state.currentRoute.concat(action.currentIndex),
+      };
+    case bookmarkAction.BOOKMARK_UPDATE_CURRENT_DEPTH:
+      return {
+        ...state,
         currentDepth: action.currentDepth,
       };
-    case bookmarkAction.BOOKMARK_UPDATE_PREV:
+    case bookmarkAction.BOOKMARK_RESET_CURRENT_ROUTE:
+      const resetBookmarks = state.currentRoute;
+      resetBookmarks.splice(0);
       return {
         ...state,
-        prevIndex: action.prevIndex,
-        prevDepth: action.prevDeth,
+        currentRoute: resetBookmarks,
       };
+    // case bookmarkAction.BOOKMARK_UPDATE_CURRENT:
+    //   return {
+    //     ...state,
+    //     currentIndex: action.currentIndex,
+    //     currentDepth: action.currentDepth,
+    //   };
+    // case bookmarkAction.BOOKMARK_UPDATE_PREV:
+    //   return {
+    //     ...state,
+    //     prevIndex: action.prevIndex,
+    //     prevDepth: action.prevDeth,
+    //   };
     default:
       return state;
   }

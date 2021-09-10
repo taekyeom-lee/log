@@ -1,43 +1,52 @@
 import { useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { AiFillCaretDown, AiFillCaretRight } from 'react-icons/ai';
 
+import {
+  updateCurrentRoute,
+  updateCurrentDepth,
+  resetCurrentRoute,
+} from '../../store/action/bookmarkAction';
 import Folder from '../../resources/img/folder.svg';
 import OpenedFolder from '../../resources/img/opened_folder.svg';
 import classes from './BookmarksFolderNode.module.css';
 
 function BookmarksFolderNode(props) {
   const [folderIsOpen, setFolderIsOpen] = useState(false);
-  const [subfoldersSelected, setSubFoldersSelected] = useState(
-    new Array(props.folder.length).fill(false)
-  );
+
   const tab = useRef();
   const img = useRef();
   const title = useRef();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (props.isSelected) {
-      tab.current.style.backgroundColor = '#1a73eb';
-      img.current.src = OpenedFolder;
-      title.current.style.color = '#1a73eb';
-    } else {
+    if (!props.folder.selected) {
       tab.current.style.backgroundColor = 'transparent';
       img.current.src = Folder;
       title.current.style.color = 'black';
     }
-  }, [props.isSelected]);
+  });
 
   const openFolder = () => {
     setFolderIsOpen((prevState) => !prevState);
   };
 
   const selectFolder = () => {
+    props.folder.selected = true;
+
+    tab.current.style.backgroundColor = '#1a73eb';
+    img.current.src = OpenedFolder;
+    title.current.style.color = '#1a73eb';
+
+    dispatch(resetCurrentRoute());
+    dispatch(updateCurrentDepth(props.folder.depth));
     props.select(props.index);
   };
 
   const selectSubfolder = (index) => {
-    let result = new Array(props.folder.subFolder.length).fill(false);
-    result[index] = true;
-    setSubFoldersSelected(result);
+    dispatch(updateCurrentRoute(index));
+    props.select(props.index);
   };
 
   const paddingLeft = 20 * (props.folder.depth - 1);
@@ -55,7 +64,12 @@ function BookmarksFolderNode(props) {
                 <AiFillCaretRight className={classes.ironIcon} />
               ))}
           </div>
-          <img src={Folder} className={classes.folderIcon} ref={img} />
+          <img
+            src={Folder}
+            alt={Folder}
+            className={classes.folderIcon}
+            ref={img}
+          />
           <div className={classes.menuLabel} onClick={selectFolder} ref={title}>
             {props.folder.title}
           </div>
@@ -68,7 +82,6 @@ function BookmarksFolderNode(props) {
               key={subFolder.id}
               folder={subFolder}
               index={index}
-              isSelected={subfoldersSelected[index]}
               select={(index) => selectSubfolder(index)}
             />
           ))}

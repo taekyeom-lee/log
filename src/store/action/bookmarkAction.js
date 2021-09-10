@@ -6,8 +6,12 @@ export const BOOKMARK_EDIT_ITEM = 'BOOKMARK_EDIT_ITEM';
 export const BOOKMARK_RESTORE_ITEM = 'BOOKMARK_RESTORE_ITEM';
 export const BOOKMARK_UPDATE_ITEM = 'BOOKMARK_UPDATE_ITEM';
 
-export const BOOKMARK_UPDATE_CURRENT = 'BOOKMARK_UPDATE_CURRENT';
-export const BOOKMARK_UPDATE_PREV = 'BOOKMARK_UPDATE_PREV';
+export const BOOKMARK_UPDATE_CURRENT_ROUTE = 'BOOKMARK_UPDATE_CURRENT_ROUTE';
+export const BOOKMARK_UPDATE_CURRENT_DEPTH = 'BOOKMARK_UPDATE_CURRENT_DEPTH';
+export const BOOKMARK_RESET_CURRENT_ROUTE = 'BOOKMARK_RESET_CURRENT_ROUTE';
+// export const BOOKMARK_UPDATE_PREV_ROUTE = 'BOOKMARK_UPDATE_PREV_ROUTE';
+// export const BOOKMARK_UPDATE_PREV_DEPTH = 'BOOKMARK_UPDATE_PREV_DEPTH';
+// export const BOOKMARK_RESET_PREV_ROUTE = 'BOOKMARK_RESET_PREV_ROUTE';
 
 export const setKeyword = (keyword) => {
   return {
@@ -65,18 +69,38 @@ export const updateItem = (dragIndex, hoverIndex, dragBookmark) => {
   };
 };
 
-export const updateCurrent = (currentIndex, currentDepth) => {
+export const updateCurrentRoute = (currentIndex) => {
   return {
-    type: BOOKMARK_UPDATE_CURRENT,
+    type: BOOKMARK_UPDATE_CURRENT_ROUTE,
     currentIndex,
+  };
+};
+
+export const updateCurrentDepth = (currentDepth) => {
+  return {
+    type: BOOKMARK_UPDATE_CURRENT_DEPTH,
     currentDepth,
   };
 };
 
-export const updatePrev = (prevIndex, prevDepth) => {
+export const resetCurrentRoute = () => {
   return {
-    type: BOOKMARK_UPDATE_PREV,
-    prevIndex,
-    prevDepth,
+    type: BOOKMARK_RESET_CURRENT_ROUTE,
   };
 };
+
+// export const updateCurrent = (currentIndex, currentDepth) => {
+//   return {
+//     type: BOOKMARK_UPDATE_CURRENT,
+//     currentIndex,
+//     currentDepth,
+//   };
+// };
+
+// export const updatePrev = (prevIndex, prevDepth) => {
+//   return {
+//     type: BOOKMARK_UPDATE_PREV,
+//     prevIndex,
+//     prevDepth,
+//   };
+// };

@@ -44,37 +44,37 @@ export const folders = [
     id: 1,
     depth: 1,
     title: 'Bookmark 1',
-    selected: 'true',
+    selected: true,
     subFolder: [
       {
         id: 1,
         depth: 2,
         title: 'SubBookmark 1',
-        selected: 'false',
+        selected: false,
         subFolder: [
           {
             id: 1,
             depth: 3,
             title: 'SubBookmark 11',
-            selected: 'false',
+            selected: false,
           },
           {
             id: 2,
             depth: 3,
             title: 'SubBookmark 22',
-            selected: 'false',
+            selected: false,
           },
           {
             id: 3,
             depth: 3,
             title: 'SubBookmark 33',
-            selected: 'false',
+            selected: false,
             subFolder: [
               {
                 id: 1,
                 depth: 4,
                 title: 'SubBookmark 111',
-                selected: 'false',
+                selected: false,
               },
             ],
           },
@@ -84,7 +84,7 @@ export const folders = [
         id: 2,
         depth: 2,
         title: 'SubBookmark 2',
-        selected: 'false',
+        selected: false,
       },
     ],
   },
