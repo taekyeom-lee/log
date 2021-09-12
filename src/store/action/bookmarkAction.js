@@ -9,9 +9,7 @@ export const BOOKMARK_UPDATE_ITEM = 'BOOKMARK_UPDATE_ITEM';
 export const BOOKMARK_UPDATE_CURRENT_ROUTE = 'BOOKMARK_UPDATE_CURRENT_ROUTE';
 export const BOOKMARK_UPDATE_CURRENT_DEPTH = 'BOOKMARK_UPDATE_CURRENT_DEPTH';
 export const BOOKMARK_RESET_CURRENT_ROUTE = 'BOOKMARK_RESET_CURRENT_ROUTE';
-// export const BOOKMARK_UPDATE_PREV_ROUTE = 'BOOKMARK_UPDATE_PREV_ROUTE';
-// export const BOOKMARK_UPDATE_PREV_DEPTH = 'BOOKMARK_UPDATE_PREV_DEPTH';
-// export const BOOKMARK_RESET_PREV_ROUTE = 'BOOKMARK_RESET_PREV_ROUTE';
+export const BOOKMARK_SET_FOLDER_SELECTED = 'BOOKMARK_SET_FOLDER_SELECTED';
 
 export const setKeyword = (keyword) => {
   return {
@@ -89,18 +87,9 @@ export const resetCurrentRoute = () => {
   };
 };
 
-// export const updateCurrent = (currentIndex, currentDepth) => {
-//   return {
-//     type: BOOKMARK_UPDATE_CURRENT,
-//     currentIndex,
-//     currentDepth,
-//   };
-// };
-
-// export const updatePrev = (prevIndex, prevDepth) => {
-//   return {
-//     type: BOOKMARK_UPDATE_PREV,
-//     prevIndex,
-//     prevDepth,
-//   };
-// };
+export const setFolderSelected = (selected) => {
+  return {
+    type: BOOKMARK_SET_FOLDER_SELECTED,
+    selected,
+  };
+};

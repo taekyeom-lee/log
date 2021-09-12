@@ -1,14 +1,15 @@
 import * as bookmarkAction from '../action/bookmarkAction';
 import icon from '../../resources/img/logo512.png';
-import { bookmarks } from '../../resources/data';
+import { bookmarks, folders } from '../../resources/data';
 
 const initState = {
   keyword: '',
   currentId: bookmarks[bookmarks.length - 1].id,
   bookmarks: bookmarks,
-  currentRoute: [],
+  folders: folders,
+  currentRoute: [0],
   currentDepth: 1,
-  prevRoute: [],
+  prevRoute: [0],
   prevDepth: 1,
 };
 
@@ -77,23 +78,42 @@ const bookmarkReducer = (state = initState, action) => {
       };
     case bookmarkAction.BOOKMARK_RESET_CURRENT_ROUTE:
       const resetBookmarks = state.currentRoute;
+
       resetBookmarks.splice(0);
       return {
         ...state,
+        prevDepth: state.currentDepth,
         currentRoute: resetBookmarks,
       };
-    // case bookmarkAction.BOOKMARK_UPDATE_CURRENT:
-    //   return {
-    //     ...state,
-    //     currentIndex: action.currentIndex,
-    //     currentDepth: action.currentDepth,
-    //   };
-    // case bookmarkAction.BOOKMARK_UPDATE_PREV:
-    //   return {
-    //     ...state,
-    //     prevIndex: action.prevIndex,
-    //     prevDepth: action.prevDeth,
-    //   };
+    case bookmarkAction.BOOKMARK_SET_FOLDER_SELECTED:
+      const currentDepth = state.currentDepth;
+      const prevDepth = state.prevDepth;
+
+      let folders = state.folders;
+
+      let prevFolder = folders;
+      let testFolder = folders;
+
+      const currentRoute = state.currentRoute.slice();
+      const prevRoute = state.prevRoute;
+
+      prevFolder = prevFolder[0];
+      for (let i = prevDepth - 1; i > 0; i--) {
+        prevFolder = prevFolder.subFolder[prevRoute[i - 1]];
+      }
+
+      prevFolder.selected = false;
+
+      testFolder = testFolder[0];
+      for (let i = currentDepth - 1; i > 0; i--) {
+        testFolder = testFolder.subFolder[currentRoute[i - 1]];
+      }
+
+      testFolder.selected = true;
+      return {
+        ...state,
+        prevRoute: currentRoute,
+      };
     default:
       return state;
   }

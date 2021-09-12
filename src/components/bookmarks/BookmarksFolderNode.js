@@ -25,6 +25,10 @@ function BookmarksFolderNode(props) {
       tab.current.style.backgroundColor = 'transparent';
       img.current.src = Folder;
       title.current.style.color = 'black';
+    } else {
+      tab.current.style.backgroundColor = '#1a73eb';
+      img.current.src = OpenedFolder;
+      title.current.style.color = '#1a73eb';
     }
   });
 
@@ -32,16 +36,11 @@ function BookmarksFolderNode(props) {
     setFolderIsOpen((prevState) => !prevState);
   };
 
-  const selectFolder = () => {
-    props.folder.selected = true;
-
-    tab.current.style.backgroundColor = '#1a73eb';
-    img.current.src = OpenedFolder;
-    title.current.style.color = '#1a73eb';
-
+  const selectFolder = (event) => {
     dispatch(resetCurrentRoute());
     dispatch(updateCurrentDepth(props.folder.depth));
-    props.select(props.index);
+
+    props.select(props.index, event);
   };
 
   const selectSubfolder = (index) => {
@@ -56,14 +55,17 @@ function BookmarksFolderNode(props) {
       <div className={classes.bookmarksMainFolderNode}>
         <div className={classes.verticalTab} ref={tab}></div>
         <div className={classes.innerContainer} style={{ paddingLeft }}>
-          <div className={classes.icon} onClick={openFolder}>
-            {props.folder.subFolder &&
-              (folderIsOpen ? (
+          {props.folder.subFolder ? (
+            <div className={classes.icon} onClick={openFolder}>
+              {folderIsOpen ? (
                 <AiFillCaretDown className={classes.ironIcon} />
               ) : (
                 <AiFillCaretRight className={classes.ironIcon} />
-              ))}
-          </div>
+              )}
+            </div>
+          ) : (
+            <div className={classes.noIcon}></div>
+          )}
           <img
             src={Folder}
             alt={Folder}
