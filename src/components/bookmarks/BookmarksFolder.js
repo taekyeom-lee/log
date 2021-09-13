@@ -2,8 +2,10 @@ import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
-  updateCurrentRoute,
-  setFolderSelected,
+  setSelectFolder,
+  setSelectFolderPath,
+  setOpenFolder,
+  setOpenFolderPath,
 } from '../../store/action/bookmarkAction';
 import BookmarksFolderNode from './BookmarksFolderNode';
 import classes from './BookmarksFolder.module.css';
@@ -16,9 +18,14 @@ function BookmarksFolder() {
 
   const folders = selected.folders;
 
-  const selectFolder = (index) => {
-    dispatch(updateCurrentRoute(index));
-    dispatch(setFolderSelected(true));
+  const selectParentfolder = (index) => {
+    dispatch(setSelectFolderPath(index));
+    dispatch(setSelectFolder());
+  };
+
+  const openParentFolder = (index) => {
+    dispatch(setOpenFolderPath(index));
+    dispatch(setOpenFolder());
   };
 
   return (
@@ -27,8 +34,9 @@ function BookmarksFolder() {
         <BookmarksFolderNode
           key={folder.id}
           folder={folder}
-          select={(index) => selectFolder(index)}
           index={index}
+          select={(index) => selectParentfolder(index)}
+          open={(index) => openParentFolder(index)}
         />
       ))}
     </div>

@@ -6,10 +6,21 @@ export const BOOKMARK_EDIT_ITEM = 'BOOKMARK_EDIT_ITEM';
 export const BOOKMARK_RESTORE_ITEM = 'BOOKMARK_RESTORE_ITEM';
 export const BOOKMARK_UPDATE_ITEM = 'BOOKMARK_UPDATE_ITEM';
 
-export const BOOKMARK_UPDATE_CURRENT_ROUTE = 'BOOKMARK_UPDATE_CURRENT_ROUTE';
-export const BOOKMARK_UPDATE_CURRENT_DEPTH = 'BOOKMARK_UPDATE_CURRENT_DEPTH';
-export const BOOKMARK_RESET_CURRENT_ROUTE = 'BOOKMARK_RESET_CURRENT_ROUTE';
-export const BOOKMARK_SET_FOLDER_SELECTED = 'BOOKMARK_SET_FOLDER_SELECTED';
+// SelectFolder
+export const BOOKMARK_SET_SELECT_FOLDER = 'BOOKMARK_SET_SELECT_FOLDER';
+export const BOOKMARK_SET_SELECT_FOLDER_DEPTH =
+  'BOOKMARK_SET_SELECT_FOLDER_DEPTH';
+export const BOOKMARK_SET_SELECT_FOLDER_PATH =
+  'BOOKMARK_SET_SELECT_FOLDER_PATH';
+export const BOOKMARK_RESET_SELECT_FOLDER_PATH =
+  'BOOKMARK_RESET_SELECT_FOLDER_PATH';
+
+// OpenFolder
+export const BOOKMARK_SET_OPEN_FOLDER = 'BOOKMARK_SET_OPEN_FOLDER';
+export const BOOKMARK_SET_OPEN_FOLDER_DEPTH = 'BOOKMARK_SET_OPEN_FOLDER_DEPTH';
+export const BOOKMARK_SET_OPEN_FOLDER_PATH = 'BOOKMARK_SET_OPEN_FOLDER_PATH';
+export const BOOKMARK_RESET_OPEN_FOLDER_PATH =
+  'BOOKMARK_RESET_OPEN_FOLDER_PATH';
 
 export const setKeyword = (keyword) => {
   return {
@@ -67,29 +78,56 @@ export const updateItem = (dragIndex, hoverIndex, dragBookmark) => {
   };
 };
 
-export const updateCurrentRoute = (currentIndex) => {
+// SelectFolder
+export const setSelectFolder = () => {
   return {
-    type: BOOKMARK_UPDATE_CURRENT_ROUTE,
-    currentIndex,
+    type: BOOKMARK_SET_SELECT_FOLDER,
   };
 };
 
-export const updateCurrentDepth = (currentDepth) => {
+export const setSelectFolderDepth = (selectFolderDepth) => {
   return {
-    type: BOOKMARK_UPDATE_CURRENT_DEPTH,
-    currentDepth,
+    type: BOOKMARK_SET_SELECT_FOLDER_DEPTH,
+    selectFolderDepth,
   };
 };
 
-export const resetCurrentRoute = () => {
+export const setSelectFolderPath = (selectFolderIndex) => {
   return {
-    type: BOOKMARK_RESET_CURRENT_ROUTE,
+    type: BOOKMARK_SET_SELECT_FOLDER_PATH,
+    selectFolderIndex,
   };
 };
 
-export const setFolderSelected = (selected) => {
+export const resetSelectFolderPath = () => {
   return {
-    type: BOOKMARK_SET_FOLDER_SELECTED,
-    selected,
+    type: BOOKMARK_RESET_SELECT_FOLDER_PATH,
+  };
+};
+
+// OpenFolder
+export const setOpenFolder = () => {
+  return {
+    type: BOOKMARK_SET_OPEN_FOLDER,
+  };
+};
+
+export const setOpenFolderDepth = (openFolderDepth) => {
+  return {
+    type: BOOKMARK_SET_OPEN_FOLDER_DEPTH,
+    openFolderDepth,
+  };
+};
+
+export const setOpenFolderPath = (openFolderIndex) => {
+  return {
+    type: BOOKMARK_SET_OPEN_FOLDER_PATH,
+    openFolderIndex,
+  };
+};
+
+export const resetOpenFolderPath = () => {
+  return {
+    type: BOOKMARK_RESET_OPEN_FOLDER_PATH,
   };
 };
