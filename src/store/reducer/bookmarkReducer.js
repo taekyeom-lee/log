@@ -7,13 +7,6 @@ const initState = {
   currentId: bookmarks[bookmarks.length - 1].id,
   bookmarks: bookmarks,
   folders: folders,
-  currentRoute: [0],
-  currentDepth: 1,
-  prevRoute: [0],
-  prevDepth: 1,
-
-
-
 
   selectFolderPath: [0],
   selectFolderDepth: 1,
@@ -25,14 +18,13 @@ const initState = {
 };
 
 const bookmarkReducer = (state = initState, action) => {
-  
   const folders = state.folders;
-  const selectFolderDepth = state.selectFolderDepth;
-  const selectFolderPath = state.selectFolderPath;
+
+  let selectFolderDepth = state.selectFolderDepth;
+  let selectFolderPath = state.selectFolderPath;
   const shallowCopySelectFolderPath = state.selectFolderPath.slice(0);
   const prevSelectFolderDepth = state.prevSelectFolderDepth;
   const prevSelectFolderPath = state.prevSelectFolderPath;
-
 
   const openFolderDepth = state.openFolderDepth;
   const openFolderPath = state.openFolderPath;
@@ -90,22 +82,17 @@ const bookmarkReducer = (state = initState, action) => {
         bookmarks: updateBookmarks,
       };
     case bookmarkAction.BOOKMARK_SET_SELECT_FOLDER:
-      console.log(selectFolderPath)
-      console.log(selectFolderDepth)
-      console.log(prevSelectFolderPath)
-      console.log(prevSelectFolderDepth)
-
       let selectFolder = folders;
       let prevSelectFolder = folders;
 
-      prevSelectFolder = selectFolder[0];
       selectFolder = selectFolder[0];
+      prevSelectFolder = prevSelectFolder[0];
 
       for (let i = 1; i < prevSelectFolderDepth; i++) {
         prevSelectFolder = prevSelectFolder.subFolder[prevSelectFolderPath[i]];
       }
 
-      prevSelectFolder.isSelected = false;      
+      prevSelectFolder.isSelected = false;
 
       for (let i = 1; i < selectFolderDepth; i++) {
         selectFolder = selectFolder.subFolder[selectFolderPath[i]];
@@ -115,19 +102,18 @@ const bookmarkReducer = (state = initState, action) => {
 
       return {
         ...state,
-
-      }
+      };
     case bookmarkAction.BOOKMARK_SET_SELECT_FOLDER_DEPTH:
       return {
         ...state,
-        selectFolderDepth: action.selectFolderDepth
-      }
+        selectFolderDepth: action.selectFolderDepth,
+      };
     case bookmarkAction.BOOKMARK_SET_SELECT_FOLDER_PATH:
       shallowCopySelectFolderPath.unshift(action.selectFolderIndex);
       return {
         ...state,
-        selectFolderPath: shallowCopySelectFolderPath
-      }    
+        selectFolderPath: shallowCopySelectFolderPath,
+      };
     case bookmarkAction.BOOKMARK_RESET_SELECT_FOLDER_PATH:
       selectFolderPath.splice(0);
       return {
@@ -135,31 +121,61 @@ const bookmarkReducer = (state = initState, action) => {
         prevSelectFolderDepth: selectFolderDepth,
         selectFolderPath: selectFolderPath,
         prevSelectFolderPath: shallowCopySelectFolderPath,
-      }
+      };
     case bookmarkAction.BOOKMARK_SET_OPEN_FOLDER:
       let openFolder = folders;
 
-      openFolder = openFolder[0]; 
+      openFolder = openFolder[0];
 
       for (let i = 1; i < openFolderDepth; i++) {
         openFolder = openFolder.subFolder[openFolderPath[i]];
       }
 
-      openFolder.isOpened = !openFolder.isOpened
+      openFolder.isOpened = !openFolder.isOpened;
+
+      if (!openFolder.isOpened) {
+        if (
+          openFolderPath[openFolderDepth - 1] ===
+          selectFolderPath[openFolderDepth - 1]
+        ) {
+          let selectFolder = folders;
+          let prevSelectFolder = folders;
+
+          selectFolder = selectFolder[0];
+          prevSelectFolder = prevSelectFolder[0];
+
+          for (let i = 1; i < selectFolderDepth; i++) {
+            prevSelectFolder = prevSelectFolder.subFolder[selectFolderPath[i]];
+          }
+
+          prevSelectFolder.isSelected = false;
+
+          for (let i = 1; i < openFolderDepth; i++) {
+            selectFolder = selectFolder.subFolder[openFolderPath[i]];
+          }
+
+          selectFolder.isSelected = true;
+
+          selectFolderDepth = openFolderDepth; // const -> let selectFolderDepth
+          selectFolderPath = openFolderPath; // const -> let selectFolderPath
+        }
+      }
       return {
         ...state,
+        selectFolderDepth: selectFolderDepth,
+        selectFolderPath: selectFolderPath,
       };
     case bookmarkAction.BOOKMARK_SET_OPEN_FOLDER_DEPTH:
       return {
         ...state,
         openFolderDepth: action.openFolderDepth,
       };
-    case bookmarkAction.BOOKMARK_SET_OPEN_FOLDER_PATH:      
+    case bookmarkAction.BOOKMARK_SET_OPEN_FOLDER_PATH:
       shallowCopyOpenFolderPath.unshift(action.openFolderIndex);
       return {
         ...state,
         openFolderPath: shallowCopyOpenFolderPath,
-      };    
+      };
     case bookmarkAction.BOOKMARK_RESET_OPEN_FOLDER_PATH:
       shallowCopyOpenFolderPath.splice(0);
       return {
