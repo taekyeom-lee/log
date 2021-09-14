@@ -17,11 +17,14 @@ function BookmarksItem(props) {
   const [formModalIsOpen, setFormModalIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const ref = useRef(null);
 
-  const index = props.index;
-  const id = props.id;
-  const moveBookmark = props.moveBookmark;
+  const bookmarkItemRef = useRef(null);
+  const urlRef = useRef(null);
+  const imgRef = useRef(null);
+
+  const propsIndex = props.index;
+  const propsId = props.id;
+  const propsMyBookmark = props.myBookmark;
 
   const [, drop] = useDrop({
     accept: ItemTypes.Bookmark,
@@ -31,7 +34,7 @@ function BookmarksItem(props) {
       };
     },
     hover(item, monitor) {
-      if (!ref.current) {
+      if (!bookmarkItemRef.current) {
         return;
       }
       const dragIndex = item.index;
@@ -39,7 +42,8 @@ function BookmarksItem(props) {
       if (dragIndex === hoverIndex) {
         return;
       }
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverBoundingRect =
+        bookmarkItemRef.current?.getBoundingClientRect();
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
@@ -50,7 +54,7 @@ function BookmarksItem(props) {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      moveBookmark(dragIndex, hoverIndex);
+      props.moveBookmark(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
   });
@@ -58,7 +62,7 @@ function BookmarksItem(props) {
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.Bookmark,
     item: () => {
-      return { id, index };
+      return { propsId, propsIndex };
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -67,96 +71,72 @@ function BookmarksItem(props) {
 
   const opacity = isDragging ? 0 : 1;
 
-  drag(drop(ref));
+  drag(drop(bookmarkItemRef));
 
-  const openMenuModalHandler = () => {
+  const openMenuModal = () => {
     setMenuModalIsOpen(true);
   };
 
-  const closeMenuModalHandler = () => {
+  const closeMenuModal = () => {
     setMenuModalIsOpen(false);
   };
 
-  const openFormModalHandler = () => {
+  const openFormModal = () => {
     setFormModalIsOpen(true);
   };
 
-  const closeFormModalHandler = () => {
+  const closeFormModal = () => {
     setFormModalIsOpen(false);
   };
 
-  const addClassListClickedHandler = (e) => {
-    if (
-      e.target.className === classes.bookmarksItem ||
-      e.target.className === classes.bookmarksItem + ' ' + classes.clicked
-    ) {
-      removeClassListClickedHandler(e.target.parentNode.childNodes);
-      e.target.classList.add(classes.clicked);
-      e.target.childNodes[1].childNodes[1].classList.add(classes.display);
-    } else if (
-      e.target.parentNode.className === classes.bookmarksItem ||
-      e.target.parentNode.className ===
-        classes.bookmarksItem + ' ' + classes.clicked
-    ) {
-      removeClassListClickedHandler(e.target.parentNode.parentNode.childNodes);
-      e.target.parentNode.classList.add(classes.clicked);
-      e.target.parentNode.childNodes[1].childNodes[1].classList.add(
+  const addClassListClicked = (e) => {
+    removeClassListClicked();
+    bookmarkItemRef.current.classList.add(classes.clicked);
+    urlRef.current.classList.add(classes.display);
+  };
+
+  const removeClassListClicked = () => {
+    const bookmarkList = bookmarkItemRef.current.parentNode;
+    const length = bookmarkList.childNodes.length;
+
+    for (let i = 0; i < length; i++) {
+      bookmarkList.childNodes[i].classList.remove(classes.clicked);
+      bookmarkList.childNodes[i].childNodes[1].childNodes[1].classList.remove(
         classes.display
       );
-      setMenuModalLocationHandler(e.target);
-    } else if (
-      e.target.parentNode.parentNode.className === classes.bookmarksItem ||
-      e.target.parentNode.parentNode.className ===
-        classes.bookmarksItem + ' ' + classes.clicked
-    ) {
-      removeClassListClickedHandler(
-        e.target.parentNode.parentNode.parentNode.childNodes
-      );
-      e.target.parentNode.parentNode.classList.add(classes.clicked);
-      e.target.parentNode.parentNode.childNodes[1].childNodes[1].classList.add(
-        classes.display
-      );
-      setMenuModalLocationHandler(e.target.parentNode);
     }
   };
 
-  const removeClassListClickedHandler = (child) => {
-    for (let i = 0; i < child.length; i++) {
-      child[i].classList.remove(classes.clicked);
-      child[i].childNodes[1].childNodes[1].classList.remove(classes.display);
-    }
+  const clickImage = () => {
+    const clientRect = imgRef.current.getBoundingClientRect();
+    const relativeLeft = clientRect.left - 110;
+    const relativeTop = clientRect.top;
+
+    setX(relativeLeft);
+    setY(relativeTop);
+
+    openMenuModal();
   };
 
-  const setMenuModalLocationHandler = (parent) => {
-    if (parent.className === classes.image) {
-      const clientRect = parent.getBoundingClientRect();
-      const relativeLeft = clientRect.left;
-      const relativeTop = clientRect.top;
-
-      setX(relativeLeft);
-      setY(relativeTop);
-
-      openMenuModalHandler();
-    }
-  };
-
-  const removeBookmarkHandler = () => {
-    props.getDeleteAction(id);
+  const removeBookmark = () => {
+    props.getDeleteAction(propsId);
   };
 
   return (
     <div
-      ref={ref}
+      ref={bookmarkItemRef}
       className={classes.bookmarksItem}
       style={{ opacity }}
-      onClick={addClassListClickedHandler}
+      onClick={addClassListClicked}
     >
       <img src={props.myBookmark.icon} alt={props.myBookmark.icon} />
       <div className={classes.text}>
         <div>{props.myBookmark.title}</div>
-        <div className={classes.url}>{props.myBookmark.url}</div>
+        <div className={classes.url} ref={urlRef}>
+          {props.myBookmark.url}
+        </div>
       </div>
-      <div className={classes.image}>
+      <div className={classes.image} ref={imgRef} onClick={clickImage}>
         <GoKebabVertical />
       </div>
       {menuModalIsOpen && (
@@ -164,23 +144,23 @@ function BookmarksItem(props) {
           type="item"
           x={x}
           y={y}
-          id={props.myBookmark.id}
-          getDeleteAction={removeBookmarkHandler}
-          getEditAction={openFormModalHandler}
-          onClose={closeMenuModalHandler}
+          id={propsMyBookmark.id}
+          getDeleteAction={removeBookmark}
+          getEditAction={openFormModal}
+          onClose={closeMenuModal}
         />
       )}
-      {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModalHandler} />}
+      {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModal} />}
       {formModalIsOpen && (
         <FormModal
           type="edit"
-          title={props.myBookmark.title}
-          url={props.myBookmark.url}
-          id={props.myBookmark.id}
-          onClose={closeFormModalHandler}
+          title={propsMyBookmark.title}
+          url={propsMyBookmark.url}
+          id={propsMyBookmark.id}
+          onClose={closeFormModal}
         />
       )}
-      {formModalIsOpen && <FormBackdrop onClose={closeFormModalHandler} />}
+      {formModalIsOpen && <FormBackdrop onClose={closeFormModal} />}
     </div>
   );
 }

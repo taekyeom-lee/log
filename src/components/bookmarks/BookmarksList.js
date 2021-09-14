@@ -19,21 +19,23 @@ function BookmarksList(props) {
   };
 
   return (
-    <div
-      className={classes.bookmarksList}
-      style={{ height, paddingTop, paddingBottom }}
-    >
+    <div className={classes.bookmarksList}>
       {propsMyBookmarks ? (
-        propsMyBookmarks.map((myBookmark, index) => (
-          <BookmarksItem
-            key={myBookmark.id}
-            index={index}
-            id={myBookmark.id}
-            myBookmark={myBookmark}
-            moveBookmark={props.moveBookmark}
-            getDeleteAction={removeBookmarkHandler}
-          />
-        ))
+        <div
+          className={classes.ironList}
+          style={{ height, paddingTop, paddingBottom }}
+        >
+          {propsMyBookmarks.map((myBookmark, index) => (
+            <BookmarksItem
+              key={myBookmark.id}
+              index={index}
+              id={myBookmark.id}
+              myBookmark={myBookmark}
+              moveBookmark={props.moveBookmark}
+              getDeleteAction={removeBookmarkHandler}
+            />
+          ))}
+        </div>
       ) : (
         <div className={classes.centerMessage}>
           페이지를 북마크에 추가하려면 오른쪽 마우스를 클릭하세요
