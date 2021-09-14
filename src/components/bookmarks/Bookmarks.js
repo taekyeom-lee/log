@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -31,40 +31,52 @@ function Bookmarks() {
   const location = useLocation();
 
   const selected = useSelector((state) => state.bookmark);
-  const selectedData = useSelector((state) => state.bookmark.bookmarks);
+  const selectedData = useSelector((state) => state.bookmark.bookmarks); // 지울거
   const dispatch = useDispatch();
+
+  const route = selected.selectFolderPath;
+  const depth = selected.selectFolderDepth;
+
+  let array = selected.folders;
+
+  for (let i = 0; i < depth; i++) {
+    array = array[route[i]].subFolder;
+  }
 
   let filteredBookmarks;
 
-  filteredBookmarks = selectedData.filter((selectedData) =>
-    selectedData.title.toLowerCase().includes(selected.keyword)
+  filteredBookmarks = selectedData.filter(
+    (
+      selectedData // 수정
+    ) => selectedData.title.toLowerCase().includes(selected.keyword)
   );
 
-  const openMenuModalHandler = () => {
+  const openMenuModal = () => {
     setMenuModalIsOpen(true);
   };
 
-  const closeMenuModalHandler = () => {
+  const closeMenuModal = () => {
     setMenuModalIsOpen(false);
   };
 
-  const openFormModalHandler = () => {
+  const openFormModal = () => {
     setFormModalIsOpen(true);
   };
 
-  const closeFormModalHandler = () => {
+  const closeFormModal = () => {
     setFormModalIsOpen(false);
   };
 
-  const openAlertToastHandler = () => {
+  const openAlertToast = () => {
     setAlertToast(true);
   };
 
-  const closeAlertToastHandler = () => {
+  const closeAlertToast = () => {
     setAlertToast(false);
   };
 
-  const setMenuModalLocationHandler = (e) => {
+  const setMenuModalLocation = (e) => {
+    // 수정
     const substring = 'Backdrop';
     if (
       location.pathname === '/bookmarks' &&
@@ -75,11 +87,12 @@ function Bookmarks() {
       setY(e.nativeEvent.pageY);
       setX(e.nativeEvent.pageX);
 
-      openMenuModalHandler();
+      openMenuModal();
     }
   };
 
-  const removeBookmarkHandler = (id) => {
+  const removeBookmark = (id) => {
+    // 수정
     const data = selectedData.filter((selectedData) => selectedData.id === id);
     const dataIndex = selectedData.findIndex(
       (selectedData) => selectedData.id === id
@@ -89,20 +102,26 @@ function Bookmarks() {
     setDeleteIndex(dataIndex);
 
     dispatch(deleteItem(id));
-    openAlertToastHandler();
+    openAlertToast();
   };
 
-  const restoreBookmarkHandler = () => {
+  const restoreBookmark = () => {
+    // 수정
     dispatch(restoreItem(deleteIndex, deleteData));
   };
 
   const moveBookmark = useCallback(
+    // 수정
     (dragIndex, hoverIndex) => {
       const dragBookmark = selectedData[dragIndex];
       dispatch(updateItem(dragIndex, hoverIndex, dragBookmark));
     },
     [dispatch, selectedData]
   );
+
+  const handler = () => {
+    // 수정
+  };
 
   useEffect(() => {
     dispatch(setKeyword(''));
@@ -112,16 +131,14 @@ function Bookmarks() {
   }, [dispatch, alertToast]);
 
   return (
-    <div
-      className={classes.bookmarks}
-      onContextMenu={setMenuModalLocationHandler}
-    >
+    <div className={classes.bookmarks} onContextMenu={setMenuModalLocation}>
       <BookmarksFolder />
       <DndProvider backend={HTML5Backend}>
         <BookmarsList
-          myBookmarks={filteredBookmarks}
+          myBookmarks={array}
+          // myBookmarks={filteredBookmarks}
           moveBookmark={moveBookmark}
-          getDeleteAction={removeBookmarkHandler}
+          getDeleteAction={removeBookmark}
         />
       </DndProvider>
       {menuModalIsOpen && (
@@ -129,20 +146,19 @@ function Bookmarks() {
           type="contextMenu"
           x={x}
           y={y}
-          getAddAction={openFormModalHandler}
-          onClose={closeMenuModalHandler}
+          getAddBookmarkAction={openFormModal}
+          getAddFolderAction={handler}
+          onClose={closeMenuModal}
         />
       )}
-      {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModalHandler} />}
-      {formModalIsOpen && (
-        <FormModal type="add" onClose={closeFormModalHandler} />
-      )}
-      {formModalIsOpen && <FormBackdrop onClose={closeFormModalHandler} />}
+      {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModal} />}
+      {formModalIsOpen && <FormModal type="add" onClose={closeFormModal} />}
+      {formModalIsOpen && <FormBackdrop onClose={closeFormModal} />}
       {alertToast && (
         <AlertToast
           title={deleteData.title}
-          onClose={closeAlertToastHandler}
-          onCancel={restoreBookmarkHandler}
+          onClose={closeAlertToast}
+          onCancel={restoreBookmark}
         />
       )}
     </div>

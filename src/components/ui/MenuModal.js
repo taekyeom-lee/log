@@ -1,46 +1,58 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import classes from './MenuModal.module.css';
 
 function MenuModal(props) {
-  const addBookmarkHandler = () => {
-    props.getAddAction();
+  const propsType = props.type;
+  const propsX = props.x;
+  const propsY = props.y;
+
+  const menuModalRef = useRef(null);
+
+  const addBookmark = () => {
+    props.getAddBookmarkAction();
     props.onClose();
   };
 
-  const editBookmarkHandler = () => {
+  const addFolder = () => {
+    props.getAddFolderAction();
+    props.onClose();
+  };
+
+  const editBookmark = () => {
     props.getEditAction();
     props.onClose();
   };
 
-  const removeBookmarkHandler = () => {
+  const removeBookmark = () => {
     props.getDeleteAction();
     props.onClose();
   };
 
   useEffect(() => {
-    document.getElementsByClassName(classes.menuModal)[0].style.top =
-      props.y + 'px';
-    document.getElementsByClassName(classes.menuModal)[0].style.left =
-      props.x + 'px';
-    document
-      .getElementsByClassName(classes.menuModal)[0]
-      .classList.add(classes.active);
-  }, [props.y, props.x]);
+    menuModalRef.current.style.top = propsY + 'px';
+    menuModalRef.current.style.left = propsX + 'px';
+    menuModalRef.current.classList.add(classes.active);
+  }, [propsY, propsX]);
 
   return (
-    <div className={classes.menuModal}>
-      {props.type === 'contextMenu' && (
-        <p className={classes.contextMenu} onClick={addBookmarkHandler}>
-          새 북마크 추가
-        </p>
-      )}
-      {props.type === 'item' && (
+    <div className={classes.menuModal} ref={menuModalRef}>
+      {propsType === 'contextMenu' && (
         <div>
-          <p className={classes.item} onClick={editBookmarkHandler}>
+          <p className={classes.menu} onClick={addBookmark}>
+            새 북마크 추가
+          </p>
+          <p className={classes.menu} onClick={addFolder}>
+            새 폴더 추가
+          </p>
+        </div>
+      )}
+      {propsType === 'item' && (
+        <div>
+          <p className={classes.menu} onClick={editBookmark}>
             편집(E)
           </p>
-          <p className={classes.item} onClick={removeBookmarkHandler}>
+          <p className={classes.menu} onClick={removeBookmark}>
             삭제(D)
           </p>
         </div>

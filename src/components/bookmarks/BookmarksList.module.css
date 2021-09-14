@@ -1,8 +1,14 @@
 .bookmarksList {
   width: 60rem;
-  padding: 8px 0;
   margin: 24px auto;
   background-color: white;
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);  
+}
+
+.centerMessage {
+  min-height: calc(100vh - 3.5rem - 48px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

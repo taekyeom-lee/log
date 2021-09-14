@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { addItem, editItem, setId } from '../../store/action/bookmarkAction';
@@ -6,87 +6,87 @@ import { addItem, editItem, setId } from '../../store/action/bookmarkAction';
 import classes from './FormModal.module.css';
 
 function FormModal(props) {
-  const [isError, setIsError] = useState(false);
+  const propsType = props.type;
+  const propsId = props.id;
+  const propsTitle = props.title;
+  const propsUrl = props.url;
+
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
-  const id = props.id;
+  const [isError, setIsError] = useState(false);
 
-  const selectedId = useSelector((state) => state.bookmark.currentId);
+  const selectedId = useSelector((state) => state.bookmark.currentId); //
   const dispatch = useDispatch();
 
-  const changeTitleHandler = (e) => {
+  const changeTitle = (e) => {
     setTitle(e.target.value);
   };
 
-  const chagneUrlHandler = (e) => {
+  const chagneUrl = (e) => {
     setUrl(e.target.value);
   };
 
-  const cancelHandler = () => {
+  const cancelButton = () => {
     props.onClose();
   };
 
-  const saveHandler = (e) => {
+  const saveButton = () => {
     if (url) {
-      if (props.type === 'add') {
-        dispatch(addItem(selectedId + 1, title, url));
-        dispatch(setId(selectedId + 1));
-        props.onClose();
-      } else if (props.type === 'edit') {
-        dispatch(editItem(id, title, url));
-        props.onClose();
+      switch (propsType) {
+        case 'add':
+          dispatch(addItem(selectedId + 1, title, url)); //
+          dispatch(setId(selectedId + 1)); //
+          props.onClose();
+          break;
+        case 'edit':
+          dispatch(editItem(propsId, title, url)); //
+          props.onClose();
+          break;
+        default:
+          break;
       }
     } else {
-      alertErrorHandler(e);
+      alertError();
     }
   };
 
-  const alertErrorHandler = (e) => {
-    e.target.parentNode.parentNode.childNodes[1].childNodes[1].childNodes[0].classList.add(
-      classes.error
-    );
+  const alertError = () => {
     setIsError(true);
   };
 
   useEffect(() => {
-    if (props.type === 'edit') {
-      setTitle(props.title);
-      setUrl(props.url);
+    if (propsType === 'edit') {
+      setTitle(propsTitle);
+      setUrl(propsUrl);
     }
-  }, [props.type, props.title, props.url]);
+  }, [propsType, propsTitle, propsUrl]);
 
   return (
     <div className={classes.formModal}>
-      {props.type === 'add' && <div className={classes.title}>북마크 추가</div>}
-      {props.type === 'edit' && (
-        <div className={classes.title}>북마크 수정</div>
-      )}
+      {propsType === 'add' && <div className={classes.title}>북마크 추가</div>}
+      {propsType === 'edit' && <div className={classes.title}>북마크 수정</div>}
       <div className={classes.form}>
         <div className={classes.name}>
           <div className={classes.text}>이름</div>
           <input
             className={classes.input}
             value={title}
-            onChange={changeTitleHandler}
+            onChange={changeTitle}
           />
         </div>
         <div className={classes.url}>
           <div className={classes.text}>URL</div>
-          <input
-            className={classes.input}
-            value={url}
-            onChange={chagneUrlHandler}
-          />
+          <input className={classes.input} value={url} onChange={chagneUrl} />
           {isError && (
             <div className={classes.error}>URL이 올바르지 않습니다.</div>
           )}
         </div>
       </div>
       <div className={classes.button}>
-        <button className={classes.cancelButton} onClick={cancelHandler}>
+        <button className={classes.cancelButton} onClick={cancelButton}>
           취소
         </button>
-        <button className={classes.saveButton} onClick={saveHandler}>
+        <button className={classes.saveButton} onClick={saveButton}>
           저장
         </button>
       </div>

@@ -90,15 +90,20 @@ function BookmarksFolderNode(props) {
       </div>
       <div className={classes.bookmarksSubFolderNode}>
         {props.folder.isOpened &&
-          props.folder.subFolder.map((subFolder, index) => (
-            <BookmarksFolderNode
-              key={subFolder.id}
-              folder={subFolder}
-              index={index}
-              select={(index) => selectParentfolder(index)}
-              open={(index) => openParentFolder(index)}
-            />
-          ))}
+          props.folder.subFolder.map((subFolder, index) => {
+            return (
+              <div key={subFolder.id}>
+                {subFolder.type === 'folder' && (
+                  <BookmarksFolderNode
+                    folder={subFolder}
+                    index={index}
+                    select={(index) => selectParentfolder(index)}
+                    open={(index) => openParentFolder(index)}
+                  />
+                )}
+              </div>
+            );
+          })}
       </div>
     </div>
   );

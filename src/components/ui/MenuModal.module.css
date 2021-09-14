@@ -10,16 +10,7 @@
   transform: scale(0);
 }
 
-.contextMenu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 32px;
-  padding: 0 24px;
-  margin: 0;
-}
-
-.item {
+.menu {
   display: flex;
   align-items: center;
   height: 32px;
@@ -27,8 +18,7 @@
   margin: 0;
 }
 
-.contextMenu:hover,
-.item:hover {
+.menu:hover {
   background-color: silver;
 }
 
