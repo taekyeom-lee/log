@@ -38,7 +38,7 @@ function BookmarksItem(props) {
         return;
       }
       const dragIndex = item.index;
-      const hoverIndex = props.index;
+      const hoverIndex = propsIndex;
       if (dragIndex === hoverIndex) {
         return;
       }
@@ -89,7 +89,7 @@ function BookmarksItem(props) {
     setFormModalIsOpen(false);
   };
 
-  const addClassListClicked = (e) => {
+  const addClassListClicked = () => {
     removeClassListClicked();
     bookmarkItemRef.current.classList.add(classes.clicked);
     urlRef.current.classList.add(classes.display);
@@ -129,11 +129,11 @@ function BookmarksItem(props) {
       style={{ opacity }}
       onClick={addClassListClicked}
     >
-      <img src={props.myBookmark.icon} alt={props.myBookmark.icon} />
+      <img src={propsMyBookmark.icon} alt={propsMyBookmark.icon} />
       <div className={classes.text}>
-        <div>{props.myBookmark.title}</div>
+        <div>{propsMyBookmark.title}</div>
         <div className={classes.url} ref={urlRef}>
-          {props.myBookmark.url}
+          {propsMyBookmark.url}
         </div>
       </div>
       <div className={classes.image} ref={imgRef} onClick={clickImage}>

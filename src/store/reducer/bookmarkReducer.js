@@ -4,7 +4,7 @@ import { bookmarks, folders } from '../../resources/data';
 
 const initState = {
   keyword: '',
-  currentId: bookmarks[bookmarks.length - 1].id,
+  currentId: 12,
   bookmarks: bookmarks,
   folders: folders,
 
@@ -41,23 +41,43 @@ const bookmarkReducer = (state = initState, action) => {
         currentId: action.currentId,
       };
     case bookmarkAction.BOOKMARK_ADD_ITEM:
+      let folderOne = folders;
+
+      for (let i = 0; i < action.depth; i++) {
+        if (folderOne[action.path[i]].subFolder) {
+          folderOne = folderOne[action.path[i]].subFolder;
+        } else {
+          folderOne[action.path[i]].subFolder = [];
+          folderOne = folderOne[action.path[i]].subFolder;
+        }
+      }
+
+      folderOne.push({
+        id: action.id,
+        depth: action.depth,
+        type: 'bookmark',
+        title: action.title,
+        url: action.url,
+        icon: icon,
+      });
       return {
         ...state,
-        bookmarks: state.bookmarks.concat({
-          id: action.id,
-          title: action.title,
-          url: action.url,
-          icon: icon,
-        }),
       };
     case bookmarkAction.BOOKMARK_EDIT_ITEM:
+      let folderTwo = folders;
+
+      for (let i = 0; i < action.depth; i++) {
+        folderTwo = folderTwo[action.path[i]].subFolder;
+      }
+
+      folderTwo.forEach((folderTwoo) =>
+        folderTwoo.id === action.id
+          ? ((folderTwoo.title = action.title), (folderTwoo.url = action.url))
+          : folderTwoo
+      );
+
       return {
         ...state,
-        bookmarks: state.bookmarks.map((bookmark) =>
-          bookmark.id === action.id
-            ? { ...bookmark, title: action.title, url: action.url }
-            : bookmark
-        ),
       };
     case bookmarkAction.BOOKMARK_DELETE_ITEM:
       return {

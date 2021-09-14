@@ -15,8 +15,12 @@ function FormModal(props) {
   const [url, setUrl] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const selectedId = useSelector((state) => state.bookmark.currentId); //
+  const selected = useSelector((state) => state.bookmark);
   const dispatch = useDispatch();
+
+  const selectedId = selected.currentId;
+  const selectedPath = selected.selectFolderPath;
+  const selectDepth = selected.selectFolderDepth;
 
   const changeTitle = (e) => {
     setTitle(e.target.value);
@@ -34,12 +38,12 @@ function FormModal(props) {
     if (url) {
       switch (propsType) {
         case 'add':
-          dispatch(addItem(selectedId + 1, title, url)); //
-          dispatch(setId(selectedId + 1)); //
+          dispatch(addItem(selectedId + 1, selectedPath, selectDepth, title, url));
+          dispatch(setId(selectedId + 1));
           props.onClose();
           break;
         case 'edit':
-          dispatch(editItem(propsId, title, url)); //
+          dispatch(editItem(propsId, selectedPath, selectDepth, title, url));
           props.onClose();
           break;
         default:

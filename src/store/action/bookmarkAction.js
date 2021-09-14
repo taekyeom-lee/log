@@ -36,19 +36,23 @@ export const setId = (currentId) => {
   };
 };
 
-export const addItem = (id, title, url) => {
+export const addItem = (id, path, depth, title, url) => {
   return {
     type: BOOKMARK_ADD_ITEM,
     id,
+    path,
+    depth,
     title,
     url,
   };
 };
 
-export const editItem = (id, title, url) => {
+export const editItem = (id, path, depth, title, url) => {
   return {
     type: BOOKMARK_EDIT_ITEM,
     id,
+    path,
+    depth,
     title,
     url,
   };
