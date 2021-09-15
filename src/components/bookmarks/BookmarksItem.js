@@ -24,54 +24,7 @@ function BookmarksItem(props) {
 
   const propsIndex = props.index;
   const propsId = props.id;
-  const propsMyBookmark = props.myBookmark;
-
-  const [, drop] = useDrop({
-    accept: ItemTypes.Bookmark,
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
-    hover(item, monitor) {
-      if (!bookmarkItemRef.current) {
-        return;
-      }
-      const dragIndex = item.index;
-      const hoverIndex = propsIndex;
-      if (dragIndex === hoverIndex) {
-        return;
-      }
-      const hoverBoundingRect =
-        bookmarkItemRef.current?.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-      props.moveBookmark(dragIndex, hoverIndex);
-      item.index = hoverIndex;
-    },
-  });
-
-  const [{ isDragging }, drag] = useDrag({
-    type: ItemTypes.Bookmark,
-    item: () => {
-      return { propsId, propsIndex };
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
-
-  const opacity = isDragging ? 0 : 1;
-
-  drag(drop(bookmarkItemRef));
+  const propsMyBookmark = props.myBookmark;  
 
   const openMenuModal = () => {
     setMenuModalIsOpen(true);
@@ -121,6 +74,53 @@ function BookmarksItem(props) {
   const removeBookmark = () => {
     props.getDeleteAction(propsId);
   };
+
+  const [, drop] = useDrop({
+    accept: ItemTypes.Bookmark,
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item, monitor) {
+      if (!bookmarkItemRef.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = propsIndex;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingRect =
+        bookmarkItemRef.current?.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      props.moveBookmark(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.Bookmark,
+    item: () => {
+      return { propsId, propsIndex };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0 : 1;
+
+  drag(drop(bookmarkItemRef));
 
   return (
     <div

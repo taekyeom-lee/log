@@ -80,18 +80,27 @@ const bookmarkReducer = (state = initState, action) => {
         ...state,
       };
     case bookmarkAction.BOOKMARK_DELETE_ITEM:
+      let folderThree = folders;
+
+      for (let i = 0; i < action.depth; i++) {
+        folderThree = folderThree[action.path[i]].subFolder;
+      }
+
+      folderThree.splice(action.index, 1);
+
       return {
         ...state,
-        bookmarks: state.bookmarks.filter(
-          (bookmark) => bookmark.id !== action.id
-        ),
       };
     case bookmarkAction.BOOKMARK_RESTORE_ITEM:
-      const newBookmarks = state.bookmarks;
-      newBookmarks.splice(action.index, 0, action.item);
+      let folerFour = folders;
+
+      for (let i = 0; i < action.depth; i++) {
+        folerFour = folerFour[action.path[i]].subFolder;
+      }
+
+      folerFour.splice(action.index, 0, action.item);
       return {
         ...state,
-        bookmarks: newBookmarks,
       };
     case bookmarkAction.BOOKMARK_UPDATE_ITEM:
       const updateBookmarks = state.bookmarks;

@@ -58,16 +58,20 @@ export const editItem = (id, path, depth, title, url) => {
   };
 };
 
-export const deleteItem = (id) => {
+export const deleteItem = (path, depth, index) => {
   return {
     type: BOOKMARK_DELETE_ITEM,
-    id,
+    path,
+    depth,
+    index,
   };
 };
 
-export const restoreItem = (index, item) => {
+export const restoreItem = (path, depth, index, item) => {
   return {
     type: BOOKMARK_RESTORE_ITEM,
+    path,
+    depth,
     index,
     item,
   };

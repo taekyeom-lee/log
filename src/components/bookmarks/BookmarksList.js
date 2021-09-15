@@ -14,9 +14,9 @@ function BookmarksList(props) {
     paddingBottom = 8;
   }
 
-  const removeBookmarkHandler = (id) => {
-    props.getDeleteAction(id);
-  };
+  // const removeBookmarkHandler = (id) => {
+  //   props.getDeleteAction(id);
+  // };
 
   return (
     <div className={classes.bookmarksList}>
@@ -32,7 +32,7 @@ function BookmarksList(props) {
               id={myBookmark.id}
               myBookmark={myBookmark}
               moveBookmark={props.moveBookmark}
-              getDeleteAction={removeBookmarkHandler}
+              getDeleteAction={props.getDeleteAction}
             />
           ))}
         </div>

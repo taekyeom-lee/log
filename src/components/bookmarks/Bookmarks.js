@@ -34,13 +34,13 @@ function Bookmarks() {
   const selectedData = useSelector((state) => state.bookmark.bookmarks); // 지울거
   const dispatch = useDispatch();
 
-  const route = selected.selectFolderPath;
+  const path = selected.selectFolderPath;
   const depth = selected.selectFolderDepth;
 
   let array = selected.folders;
 
   for (let i = 0; i < depth; i++) {
-    array = array[route[i]].subFolder;
+    array = array[path[i]].subFolder;
   }
 
   let filteredBookmarks;
@@ -92,22 +92,19 @@ function Bookmarks() {
   };
 
   const removeBookmark = (id) => {
-    // 수정
-    const data = selectedData.filter((selectedData) => selectedData.id === id);
-    const dataIndex = selectedData.findIndex(
-      (selectedData) => selectedData.id === id
-    );
+    const data = array.filter((selectedData) => selectedData.id === id);
+    const dataIndex = array.findIndex((array) => array.id === id);
 
     setDeleteData(data[0]);
     setDeleteIndex(dataIndex);
 
-    dispatch(deleteItem(id));
+    dispatch(deleteItem(path, depth, dataIndex));
+
     openAlertToast();
   };
 
   const restoreBookmark = () => {
-    // 수정
-    dispatch(restoreItem(deleteIndex, deleteData));
+    dispatch(restoreItem(path, depth, deleteIndex, deleteData));
   };
 
   const moveBookmark = useCallback(
