@@ -4,6 +4,7 @@ import classes from './MenuModal.module.css';
 
 function MenuModal(props) {
   const propsType = props.type;
+  const propsTypee = props.typee;
   const propsX = props.x;
   const propsY = props.y;
 
@@ -21,6 +22,11 @@ function MenuModal(props) {
 
   const editBookmark = () => {
     props.getEditAction();
+    props.onClose();
+  };
+
+  const editFolder = () => {
+    props.getEditFolderAction();
     props.onClose();
   };
 
@@ -47,10 +53,20 @@ function MenuModal(props) {
           </p>
         </div>
       )}
-      {propsType === 'item' && (
+      {propsTypee === 'bookmark' && propsType === 'item' && (
         <div>
           <p className={classes.menu} onClick={editBookmark}>
             편집(E)
+          </p>
+          <p className={classes.menu} onClick={removeBookmark}>
+            삭제(D)
+          </p>
+        </div>
+      )}
+      {propsTypee === 'folder' && propsType === 'item' && (
+        <div>
+          <p className={classes.menu} onClick={editFolder}>
+            이름 바꾸기
           </p>
           <p className={classes.menu} onClick={removeBookmark}>
             삭제(D)

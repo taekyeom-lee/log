@@ -5,6 +5,7 @@ export const BOOKMARK_DELETE_ITEM = 'BOOKMARK_DELETE_ITEM';
 export const BOOKMARK_EDIT_ITEM = 'BOOKMARK_EDIT_ITEM';
 export const BOOKMARK_RESTORE_ITEM = 'BOOKMARK_RESTORE_ITEM';
 export const BOOKMARK_UPDATE_ITEM = 'BOOKMARK_UPDATE_ITEM';
+export const BOOKMARK_EDIT_FOLDER = 'BOOKMARK_EDIT_FOLDER';
 
 // SelectFolder
 export const BOOKMARK_SET_SELECT_FOLDER = 'BOOKMARK_SET_SELECT_FOLDER';
@@ -77,7 +78,13 @@ export const restoreItem = (path, depth, index, item) => {
   };
 };
 
-export const updateItem = (path, depth, dragIndex, hoverIndex, dragBookmark) => {
+export const updateItem = (
+  path,
+  depth,
+  dragIndex,
+  hoverIndex,
+  dragBookmark
+) => {
   return {
     type: BOOKMARK_UPDATE_ITEM,
     path,
@@ -85,6 +92,16 @@ export const updateItem = (path, depth, dragIndex, hoverIndex, dragBookmark) => 
     dragIndex,
     hoverIndex,
     dragBookmark,
+  };
+};
+
+export const editFolder = (id, path, depth, title) => {
+  return {
+    type: BOOKMARK_EDIT_FOLDER,
+    id,
+    path,
+    depth,
+    title,
   };
 };
 

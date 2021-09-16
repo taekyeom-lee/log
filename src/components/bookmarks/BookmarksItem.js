@@ -24,12 +24,12 @@ function BookmarksItem(props) {
 
   // const propsIndex = props.index;
   // const propsId = props.id;
-  // const propsMyBookmark = props.myBookmark;  
+  // const propsMyBookmark = props.myBookmark;
 
   const index = props.index;
   const id = props.id;
   const moveBookmark = props.moveBookmark;
-  const myBookmark = props.myBookmark;  
+  const myBookmark = props.myBookmark;
 
   const openMenuModal = () => {
     setMenuModalIsOpen(true);
@@ -77,7 +77,7 @@ function BookmarksItem(props) {
   };
 
   const removeBookmark = () => {
-    props.getDeleteAction(props.index);
+    props.getDeleteAction(props.id); // index -> id
   };
 
   const [, drop] = useDrop({
@@ -130,7 +130,7 @@ function BookmarksItem(props) {
   return (
     <div
       className={classes.bookmarksItem}
-      style={{ opacity }}      
+      style={{ opacity }}
       ref={bookmarkItemRef}
       onClick={addClassListClicked}
     >
@@ -150,8 +150,10 @@ function BookmarksItem(props) {
           x={x}
           y={y}
           id={myBookmark.id}
+          typee={myBookmark.type}
           getDeleteAction={removeBookmark}
           getEditAction={openFormModal}
+          getEditFolderAction={openFormModal}
           onClose={closeMenuModal}
         />
       )}
@@ -162,6 +164,7 @@ function BookmarksItem(props) {
           title={myBookmark.title}
           url={myBookmark.url}
           id={myBookmark.id}
+          typee={myBookmark.type}
           onClose={closeFormModal}
         />
       )}

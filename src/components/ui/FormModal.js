@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addItem, editItem, setId } from '../../store/action/bookmarkAction';
+import {
+  addItem,
+  editItem,
+  setId,
+  editFolder,
+} from '../../store/action/bookmarkAction';
 
 import classes from './FormModal.module.css';
 
 function FormModal(props) {
   const propsType = props.type;
+  const propsTypee = props.typee;
   const propsId = props.id;
   const propsTitle = props.title;
   const propsUrl = props.url;
@@ -38,19 +44,25 @@ function FormModal(props) {
     if (url) {
       switch (propsType) {
         case 'add':
-          dispatch(addItem(selectedId + 1, selectedPath, selectDepth, title, url));
+          dispatch(
+            addItem(selectedId + 1, selectedPath, selectDepth, title, url)
+          );
           dispatch(setId(selectedId + 1));
           props.onClose();
           break;
         case 'edit':
-          dispatch(editItem(propsId, selectedPath, selectDepth, title, url));
+          if (propsTypee === 'bookmark')
+            dispatch(editItem(propsId, selectedPath, selectDepth, title, url));
           props.onClose();
           break;
         default:
           break;
       }
     } else {
-      alertError();
+      if (propsTypee === 'folder') {
+        dispatch(editFolder(propsId, selectedPath, selectDepth, title));
+        props.onClose();
+      } else alertError();
     }
   };
 
@@ -59,16 +71,26 @@ function FormModal(props) {
   };
 
   useEffect(() => {
-    if (propsType === 'edit') {
+    if (propsType === 'edit' && propsTypee === 'bookmark') {
       setTitle(propsTitle);
       setUrl(propsUrl);
     }
-  }, [propsType, propsTitle, propsUrl]);
+    if (propsType === 'edit' && propsTypee === 'folder') {
+      setTitle(propsTitle);
+    }
+  }, [propsType, propsTitle, propsUrl, propsTypee]);
 
   return (
     <div className={classes.formModal}>
-      {propsType === 'add' && <div className={classes.title}>북마크 추가</div>}
-      {propsType === 'edit' && <div className={classes.title}>북마크 수정</div>}
+      {propsType === 'add' && propsTypee === 'bookmark' && (
+        <div className={classes.title}>북마크 추가</div>
+      )}
+      {propsType === 'edit' && propsTypee === 'bookmark' && (
+        <div className={classes.title}>북마크 수정</div>
+      )}
+      {propsType === 'edit' && propsTypee === 'folder' && (
+        <div className={classes.title}>폴더 이름 바꾸기</div>
+      )}
       <div className={classes.form}>
         <div className={classes.name}>
           <div className={classes.text}>이름</div>
@@ -78,13 +100,15 @@ function FormModal(props) {
             onChange={changeTitle}
           />
         </div>
-        <div className={classes.url}>
-          <div className={classes.text}>URL</div>
-          <input className={classes.input} value={url} onChange={chagneUrl} />
-          {isError && (
-            <div className={classes.error}>URL이 올바르지 않습니다.</div>
-          )}
-        </div>
+        {propsTypee === 'bookmark' && (
+          <div className={classes.url}>
+            <div className={classes.text}>URL</div>
+            <input className={classes.input} value={url} onChange={chagneUrl} />
+            {isError && (
+              <div className={classes.error}>URL이 올바르지 않습니다.</div>
+            )}
+          </div>
+        )}
       </div>
       <div className={classes.button}>
         <button className={classes.cancelButton} onClick={cancelButton}>

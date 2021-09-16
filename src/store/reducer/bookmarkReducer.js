@@ -114,6 +114,22 @@ const bookmarkReducer = (state = initState, action) => {
       return {
         ...state,
       };
+    case bookmarkAction.BOOKMARK_EDIT_FOLDER:
+      let folderSix = folders;
+
+      for (let i = 0; i < action.depth; i++) {
+        folderSix = folderSix[action.path[i]].subFolder;
+      }
+
+      folderSix.forEach((folderSixx) =>
+        folderSixx.id === action.id
+          ? (folderSixx.title = action.title)
+          : folderSixx
+      );
+
+      return {
+        ...state,
+      };
     case bookmarkAction.BOOKMARK_SET_SELECT_FOLDER:
       let selectFolder = folders;
       let prevSelectFolder = folders;
