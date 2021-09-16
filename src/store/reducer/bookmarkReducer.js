@@ -103,12 +103,16 @@ const bookmarkReducer = (state = initState, action) => {
         ...state,
       };
     case bookmarkAction.BOOKMARK_UPDATE_ITEM:
-      const updateBookmarks = state.bookmarks;
-      updateBookmarks.splice(action.dragIndex, 1);
-      updateBookmarks.splice(action.hoverIndex, 0, action.dragBookmark);
+      let folderFive = folders;
+
+      for (let i = 0; i < action.depth; i++) {
+        folderFive = folderFive[action.path[i]].subFolder;
+      }
+
+      folderFive.splice(action.dragIndex, 1);
+      folderFive.splice(action.hoverIndex, 0, action.dragBookmark);
       return {
         ...state,
-        bookmarks: updateBookmarks,
       };
     case bookmarkAction.BOOKMARK_SET_SELECT_FOLDER:
       let selectFolder = folders;

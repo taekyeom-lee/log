@@ -77,9 +77,11 @@ export const restoreItem = (path, depth, index, item) => {
   };
 };
 
-export const updateItem = (dragIndex, hoverIndex, dragBookmark) => {
+export const updateItem = (path, depth, dragIndex, hoverIndex, dragBookmark) => {
   return {
     type: BOOKMARK_UPDATE_ITEM,
+    path,
+    depth,
     dragIndex,
     hoverIndex,
     dragBookmark,

@@ -22,9 +22,14 @@ function BookmarksItem(props) {
   const urlRef = useRef(null);
   const imgRef = useRef(null);
 
-  const propsIndex = props.index;
-  const propsId = props.id;
-  const propsMyBookmark = props.myBookmark;  
+  // const propsIndex = props.index;
+  // const propsId = props.id;
+  // const propsMyBookmark = props.myBookmark;  
+
+  const index = props.index;
+  const id = props.id;
+  const moveBookmark = props.moveBookmark;
+  const myBookmark = props.myBookmark;  
 
   const openMenuModal = () => {
     setMenuModalIsOpen(true);
@@ -72,7 +77,7 @@ function BookmarksItem(props) {
   };
 
   const removeBookmark = () => {
-    props.getDeleteAction(propsId);
+    props.getDeleteAction(props.index);
   };
 
   const [, drop] = useDrop({
@@ -87,7 +92,7 @@ function BookmarksItem(props) {
         return;
       }
       const dragIndex = item.index;
-      const hoverIndex = propsIndex;
+      const hoverIndex = props.index;
       if (dragIndex === hoverIndex) {
         return;
       }
@@ -103,7 +108,7 @@ function BookmarksItem(props) {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
-      props.moveBookmark(dragIndex, hoverIndex);
+      moveBookmark(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
   });
@@ -111,7 +116,7 @@ function BookmarksItem(props) {
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.Bookmark,
     item: () => {
-      return { propsId, propsIndex };
+      return { id, index };
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -124,16 +129,16 @@ function BookmarksItem(props) {
 
   return (
     <div
-      ref={bookmarkItemRef}
       className={classes.bookmarksItem}
-      style={{ opacity }}
+      style={{ opacity }}      
+      ref={bookmarkItemRef}
       onClick={addClassListClicked}
     >
-      <img src={propsMyBookmark.icon} alt={propsMyBookmark.icon} />
+      <img src={myBookmark.icon} alt={myBookmark.icon} />
       <div className={classes.text}>
-        <div>{propsMyBookmark.title}</div>
+        <div>{myBookmark.title}</div>
         <div className={classes.url} ref={urlRef}>
-          {propsMyBookmark.url}
+          {myBookmark.url}
         </div>
       </div>
       <div className={classes.image} ref={imgRef} onClick={clickImage}>
@@ -144,7 +149,7 @@ function BookmarksItem(props) {
           type="item"
           x={x}
           y={y}
-          id={propsMyBookmark.id}
+          id={myBookmark.id}
           getDeleteAction={removeBookmark}
           getEditAction={openFormModal}
           onClose={closeMenuModal}
@@ -154,9 +159,9 @@ function BookmarksItem(props) {
       {formModalIsOpen && (
         <FormModal
           type="edit"
-          title={propsMyBookmark.title}
-          url={propsMyBookmark.url}
-          id={propsMyBookmark.id}
+          title={myBookmark.title}
+          url={myBookmark.url}
+          id={myBookmark.id}
           onClose={closeFormModal}
         />
       )}

@@ -108,12 +108,11 @@ function Bookmarks() {
   };
 
   const moveBookmark = useCallback(
-    // 수정
     (dragIndex, hoverIndex) => {
-      const dragBookmark = selectedData[dragIndex];
-      dispatch(updateItem(dragIndex, hoverIndex, dragBookmark));
+      const dragBookmark = array[dragIndex];
+      dispatch(updateItem(path, depth, dragIndex, hoverIndex, dragBookmark));
     },
-    [dispatch, selectedData]
+    [dispatch, array, depth, path]
   );
 
   const handler = () => {
