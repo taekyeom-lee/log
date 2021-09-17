@@ -14,8 +14,14 @@
   padding: 20px 20px 16px 20px;
 }
 
-.form {
+.bookmarkForm {
   height: 152px;
+  padding: 0 20px;
+  font-size: 0.6rem;
+}
+
+.folderForm {
+  height: 76px;
   padding: 0 20px;
   font-size: 0.6rem;
 }

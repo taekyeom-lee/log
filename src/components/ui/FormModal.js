@@ -11,8 +11,8 @@ import {
 import classes from './FormModal.module.css';
 
 function FormModal(props) {
-  const propsType = props.type;
-  const propsTypee = props.typee;
+  const propsFunctionType = props.functionType;
+  const propsDataType = props.dataType;
   const propsId = props.id;
   const propsTitle = props.title;
   const propsUrl = props.url;
@@ -26,7 +26,7 @@ function FormModal(props) {
 
   const selectedId = selected.currentId;
   const selectedPath = selected.selectFolderPath;
-  const selectDepth = selected.selectFolderDepth;
+  const selectedDepth = selected.selectFolderDepth;
 
   const changeTitle = (e) => {
     setTitle(e.target.value);
@@ -41,28 +41,32 @@ function FormModal(props) {
   };
 
   const saveButton = () => {
-    if (url) {
-      switch (propsType) {
-        case 'add':
-          dispatch(
-            addItem(selectedId + 1, selectedPath, selectDepth, title, url)
-          );
-          dispatch(setId(selectedId + 1));
-          props.onClose();
-          break;
-        case 'edit':
-          if (propsTypee === 'bookmark')
-            dispatch(editItem(propsId, selectedPath, selectDepth, title, url));
-          props.onClose();
-          break;
-        default:
-          break;
+    if (propsDataType === 'bookmark') {
+      if (url) {
+        switch (propsFunctionType) {
+          case 'add':
+            dispatch(
+              addItem(selectedId + 1, selectedPath, selectedDepth, title, url)
+            );
+            dispatch(setId(selectedId + 1));
+            props.onClose();
+            break;
+          case 'edit':
+            dispatch(
+              editItem(propsId, selectedPath, selectedDepth, title, url)
+            );
+            props.onClose();
+            break;
+          default:
+            break;
+        }
+      } else {
+        alertError();
       }
-    } else {
-      if (propsTypee === 'folder') {
-        dispatch(editFolder(propsId, selectedPath, selectDepth, title));
-        props.onClose();
-      } else alertError();
+    }
+    if (propsDataType === 'folder') {
+      dispatch(editFolder(propsId, selectedPath, selectedDepth, title));
+      props.onClose();
     }
   };
 
@@ -71,53 +75,86 @@ function FormModal(props) {
   };
 
   useEffect(() => {
-    if (propsType === 'edit' && propsTypee === 'bookmark') {
-      setTitle(propsTitle);
-      setUrl(propsUrl);
+    if (propsFunctionType === 'edit') {
+      if (propsDataType === 'bookmark') {
+        setTitle(propsTitle);
+        setUrl(propsUrl);
+      }
+      if (propsDataType === 'folder') {
+        setTitle(propsTitle);
+      }
     }
-    if (propsType === 'edit' && propsTypee === 'folder') {
-      setTitle(propsTitle);
-    }
-  }, [propsType, propsTitle, propsUrl, propsTypee]);
+  }, [propsFunctionType, propsDataType, propsTitle, propsUrl]);
 
   return (
     <div className={classes.formModal}>
-      {propsType === 'add' && propsTypee === 'bookmark' && (
-        <div className={classes.title}>북마크 추가</div>
-      )}
-      {propsType === 'edit' && propsTypee === 'bookmark' && (
-        <div className={classes.title}>북마크 수정</div>
-      )}
-      {propsType === 'edit' && propsTypee === 'folder' && (
-        <div className={classes.title}>폴더 이름 바꾸기</div>
-      )}
-      <div className={classes.form}>
-        <div className={classes.name}>
-          <div className={classes.text}>이름</div>
-          <input
-            className={classes.input}
-            value={title}
-            onChange={changeTitle}
-          />
-        </div>
-        {propsTypee === 'bookmark' && (
-          <div className={classes.url}>
-            <div className={classes.text}>URL</div>
-            <input className={classes.input} value={url} onChange={chagneUrl} />
-            {isError && (
-              <div className={classes.error}>URL이 올바르지 않습니다.</div>
-            )}
+      {propsDataType === 'bookmark' && (
+        <div>
+          {propsFunctionType === 'add' && (
+            <div className={classes.title}>북마크 추가</div>
+          )}
+          {propsFunctionType === 'edit' && (
+            <div className={classes.title}>북마크 수정</div>
+          )}
+          <div className={classes.bookmarkForm}>
+            <div className={classes.name}>
+              <div className={classes.text}>이름</div>
+              <input
+                className={classes.input}
+                value={title}
+                onChange={changeTitle}
+              />
+            </div>
+            <div className={classes.url}>
+              <div className={classes.text}>URL</div>
+              <input
+                className={classes.input}
+                value={url}
+                onChange={chagneUrl}
+              />
+              {isError && (
+                <div className={classes.error}>URL이 올바르지 않습니다.</div>
+              )}
+            </div>
           </div>
-        )}
-      </div>
-      <div className={classes.button}>
-        <button className={classes.cancelButton} onClick={cancelButton}>
-          취소
-        </button>
-        <button className={classes.saveButton} onClick={saveButton}>
-          저장
-        </button>
-      </div>
+          <div className={classes.button}>
+            <button className={classes.cancelButton} onClick={cancelButton}>
+              취소
+            </button>
+            <button className={classes.saveButton} onClick={saveButton}>
+              저장
+            </button>
+          </div>
+        </div>
+      )}
+      {propsDataType === 'folder' && (
+        <div>
+          {propsFunctionType === 'add' && (
+            <div className={classes.title}>폴더 추가</div>
+          )}
+          {propsFunctionType === 'edit' && (
+            <div className={classes.title}>폴더 이름 바꾸기</div>
+          )}
+          <div className={classes.folderForm}>
+            <div className={classes.name}>
+              <div className={classes.text}>이름</div>
+              <input
+                className={classes.input}
+                value={title}
+                onChange={changeTitle}
+              />
+            </div>
+          </div>
+          <div className={classes.button}>
+            <button className={classes.cancelButton} onClick={cancelButton}>
+              취소
+            </button>
+            <button className={classes.saveButton} onClick={saveButton}>
+              저장
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
