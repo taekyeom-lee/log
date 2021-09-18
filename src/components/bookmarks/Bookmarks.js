@@ -27,11 +27,12 @@ function Bookmarks() {
   const [y, setY] = useState(0);
   const [deleteData, setDeleteData] = useState([]);
   const [deleteIndex, setDeleteIndex] = useState(0);
+  const [dataType, setDataType] = useState('');
 
   const location = useLocation();
 
   const selected = useSelector((state) => state.bookmark);
-  const selectedData = useSelector((state) => state.bookmark.bookmarks); // 지울거
+  // const selectedData = useSelector((state) => state.bookmark.bookmarks); // 지울거
   const dispatch = useDispatch();
 
   const path = selected.selectFolderPath;
@@ -43,13 +44,13 @@ function Bookmarks() {
     array = array[path[i]].subFolder;
   }
 
-  let filteredBookmarks;
+  // let filteredBookmarks;
 
-  filteredBookmarks = selectedData.filter(
-    (
-      selectedData // 수정
-    ) => selectedData.title.toLowerCase().includes(selected.keyword)
-  );
+  // filteredBookmarks = selectedData.filter(
+  //   (
+  //     selectedData // 수정
+  //   ) => selectedData.title.toLowerCase().includes(selected.keyword)
+  // );
 
   const openMenuModal = () => {
     setMenuModalIsOpen(true);
@@ -115,8 +116,14 @@ function Bookmarks() {
     [dispatch, array, depth, path]
   );
 
-  const handler = () => {
-    // 수정
+  const addBookmark = () => {
+    setDataType('bookmark');
+    openFormModal();
+  };
+
+  const addFolder = () => {
+    setDataType('folder');
+    openFormModal();
   };
 
   useEffect(() => {
@@ -139,16 +146,22 @@ function Bookmarks() {
       </DndProvider>
       {menuModalIsOpen && (
         <MenuModal
-          type="contextMenu"
+          clickType="contextMenu"
           x={x}
           y={y}
-          getAddBookmarkAction={openFormModal}
-          getAddFolderAction={handler}
+          getAddBookmarkAction={addBookmark}
+          getAddFolderAction={addFolder}
           onClose={closeMenuModal}
         />
       )}
       {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModal} />}
-      {formModalIsOpen && <FormModal type="add" onClose={closeFormModal} />}
+      {formModalIsOpen && (
+        <FormModal
+          functionType="add"
+          dataType={dataType}
+          onClose={closeFormModal}
+        />
+      )}
       {formModalIsOpen && <FormBackdrop onClose={closeFormModal} />}
       {alertToast && (
         <AlertToast

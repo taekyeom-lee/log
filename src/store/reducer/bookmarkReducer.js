@@ -1,5 +1,6 @@
 import * as bookmarkAction from '../action/bookmarkAction';
 import icon from '../../resources/img/logo512.png';
+import folder from '../../resources/img/folder.svg';
 import { bookmarks, folders } from '../../resources/data';
 
 const initState = {
@@ -54,7 +55,7 @@ const bookmarkReducer = (state = initState, action) => {
 
       folderOne.push({
         id: action.id,
-        depth: action.depth,
+        depth: action.depth + 1,
         type: 'bookmark',
         title: action.title,
         url: action.url,
@@ -111,6 +112,28 @@ const bookmarkReducer = (state = initState, action) => {
 
       folderFive.splice(action.dragIndex, 1);
       folderFive.splice(action.hoverIndex, 0, action.dragBookmark);
+      return {
+        ...state,
+      };
+    case bookmarkAction.BOOKMARK_ADD_FOLDER:
+      let folderSeven = folders;
+
+      for (let i = 0; i < action.depth; i++) {
+        if (folderSeven[action.path[i]].subFolder) {
+          folderSeven = folderSeven[action.path[i]].subFolder;
+        } else {
+          folderSeven[action.path[i]].subFolder = [];
+          folderSeven = folderSeven[action.path[i]].subFolder;
+        }
+      }
+
+      folderSeven.push({
+        id: action.id,
+        depth: action.depth + 1,
+        type: 'folder',
+        title: action.title,
+        icon: folder,
+      });
       return {
         ...state,
       };

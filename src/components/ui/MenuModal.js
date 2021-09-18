@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react';
 import classes from './MenuModal.module.css';
 
 function MenuModal(props) {
-  const propsType = props.type;
-  const propsTypee = props.typee;
+  const propsClickType = props.clickType;
+  const propsDataType = props.dataType;
   const propsX = props.x;
   const propsY = props.y;
 
@@ -43,7 +43,7 @@ function MenuModal(props) {
 
   return (
     <div className={classes.menuModal} ref={menuModalRef}>
-      {propsType === 'contextMenu' && (
+      {propsClickType === 'contextMenu' && (
         <div>
           <p className={classes.menu} onClick={addBookmark}>
             새 북마크 추가
@@ -53,7 +53,7 @@ function MenuModal(props) {
           </p>
         </div>
       )}
-      {propsTypee === 'bookmark' && propsType === 'item' && (
+      {propsClickType === 'item' && propsDataType === 'bookmark' && (
         <div>
           <p className={classes.menu} onClick={editBookmark}>
             편집(E)
@@ -63,7 +63,7 @@ function MenuModal(props) {
           </p>
         </div>
       )}
-      {propsTypee === 'folder' && propsType === 'item' && (
+      {propsClickType === 'item' && propsDataType === 'folder' && (
         <div>
           <p className={classes.menu} onClick={editFolder}>
             이름 바꾸기

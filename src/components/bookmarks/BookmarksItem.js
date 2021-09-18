@@ -146,11 +146,11 @@ function BookmarksItem(props) {
       </div>
       {menuModalIsOpen && (
         <MenuModal
-          type="item"
+          clickType="item"
+          dataType={myBookmark.type}
           x={x}
           y={y}
           id={myBookmark.id}
-          typee={myBookmark.type}
           getDeleteAction={removeBookmark}
           getEditAction={openFormModal}
           getEditFolderAction={openFormModal}
@@ -160,7 +160,7 @@ function BookmarksItem(props) {
       {menuModalIsOpen && <MenuBackdrop onClose={closeMenuModal} />}
       {formModalIsOpen && (
         <FormModal
-          functionType='edit'
+          functionType="edit"
           dataType={myBookmark.type}
           title={myBookmark.title}
           url={myBookmark.url}

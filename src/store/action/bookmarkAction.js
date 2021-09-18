@@ -1,10 +1,15 @@
 export const BOOKMARK_SET_KEYWORD = 'BOOKMARK_SET_KEYWORD';
 export const BOOKMARK_SET_ID = 'BOOKMARK_SET_ID';
+
+// BOOKMARK
 export const BOOKMARK_ADD_ITEM = 'BOOKMARK_ADD_ITEM';
 export const BOOKMARK_DELETE_ITEM = 'BOOKMARK_DELETE_ITEM';
 export const BOOKMARK_EDIT_ITEM = 'BOOKMARK_EDIT_ITEM';
 export const BOOKMARK_RESTORE_ITEM = 'BOOKMARK_RESTORE_ITEM';
 export const BOOKMARK_UPDATE_ITEM = 'BOOKMARK_UPDATE_ITEM';
+
+// Folder
+export const BOOKMARK_ADD_FOLDER = 'BOOKMARK_ADD_FOLDER';
 export const BOOKMARK_EDIT_FOLDER = 'BOOKMARK_EDIT_FOLDER';
 
 // SelectFolder
@@ -92,6 +97,16 @@ export const updateItem = (
     dragIndex,
     hoverIndex,
     dragBookmark,
+  };
+};
+
+export const addFolder = (id, path, depth, title) => {
+  return {
+    type: BOOKMARK_ADD_FOLDER,
+    id,
+    path,
+    depth,
+    title,
   };
 };
 

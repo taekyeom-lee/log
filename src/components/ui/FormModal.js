@@ -6,6 +6,7 @@ import {
   editItem,
   setId,
   editFolder,
+  addFolder,
 } from '../../store/action/bookmarkAction';
 
 import classes from './FormModal.module.css';
@@ -65,8 +66,21 @@ function FormModal(props) {
       }
     }
     if (propsDataType === 'folder') {
-      dispatch(editFolder(propsId, selectedPath, selectedDepth, title));
-      props.onClose();
+      switch (propsFunctionType) {
+        case 'add':
+          dispatch(
+            addFolder(selectedId + 1, selectedPath, selectedDepth, title)
+          );
+          dispatch(setId(selectedId + 1));
+          props.onClose();
+          break;
+        case 'edit':
+          dispatch(editFolder(propsId, selectedPath, selectedDepth, title));
+          props.onClose();
+          break;
+        default:
+          break;
+      }
     }
   };
 
