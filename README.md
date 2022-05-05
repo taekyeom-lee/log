@@ -1,6 +1,6 @@
 # log
 
-> log는 google bookmark 클론 코딩 프로젝트입니다
+> log는 google bookmark 클론 코딩 프로젝트입니다 (21.07.30 - 21.09.18)
 
 ## Project Stack
 
